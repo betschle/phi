@@ -1,5 +1,7 @@
 package com.neutronio.phi.util;
 
+import com.neutronio.phi.PhiException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,7 +34,9 @@ public class AppUtil {
             fis.close();
             logger.log(Level.INFO, "Logging initialized!");
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Could not initialize logging with default config file: " + file.toPath(), e);
+            throw new PhiException(PhiException.ErrorCode.E1010,
+                "Could not initialize logging with default config file: " + file.toPath());
+        } finally {
             if (fis != null) {
                 try {
                     fis.close();
@@ -53,10 +57,9 @@ public class AppUtil {
             byte[] encoded = Files.readAllBytes(Paths.get("version"));
             return new String(encoded, Charset.forName("UTF-8"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new PhiException(PhiException.ErrorCode.E1000, "version", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new PhiException(PhiException.ErrorCode.E1010, e);
         }
-        return null;
     }
 }
