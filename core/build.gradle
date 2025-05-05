@@ -20,3 +20,15 @@ dependencies {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
 }
+
+task dist(type: Jar) {
+  manifest {
+    attributes(
+      'AppName'        : appName,
+      'AppVersion'     : version,
+      'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+      'Build-Revision' : versioning.info.commit,
+      'Created-By'     : "Gradle ${gradle.gradleVersion}",
+    )
+  }
+}
