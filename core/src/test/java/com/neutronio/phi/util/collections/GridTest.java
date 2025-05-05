@@ -33,6 +33,7 @@ public class GridTest {
     public void outOfBounds() {
         Grid<String> grid = new Grid<>(10, 10);
         Assertions.assertFalse(grid.isInBounds(100,100));
+        Assertions.assertFalse(grid.isInBounds(-100,-100));
     }
 
     @Test
