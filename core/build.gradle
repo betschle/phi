@@ -25,6 +25,11 @@ dependencies {
   }
 }
 
+test {
+  useJUnitPlatform()
+  maxHeapSize = '1G'
+}
+
 task dist(type: Jar) {
   manifest {
     attributes(
