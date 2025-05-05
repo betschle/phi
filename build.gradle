@@ -9,8 +9,7 @@ buildscript {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
   dependencies {
-
-
+    classpath 'org.gretty:gretty:3.0.7'
   }
 }
 
@@ -25,6 +24,8 @@ allprojects {
       testOutputDir file('build/classes/java/test')
     }
   }
+  // read out version from the version file
+  version = rootProject.file('version').text.trim()
 }
 
 configure(subprojects) {
