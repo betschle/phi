@@ -2,6 +2,7 @@ package com.neutronio.phi.math;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.neutronio.phi.PhiException;
 
 import java.util.List;
 import java.util.Map;
@@ -24,13 +25,13 @@ public class NumberGenerator {
     }
 
     public float getRandomFloat(float max, float min) {
-        if ( max < min) throw new IllegalArgumentException("Min can't be larger than max!");
+        if ( max < min) throw new PhiException(PhiException.ErrorCode.E0004,"Min can't be larger than max!");
         return random.nextFloat() * (max - min) + min;
     }
 
     /**
      * Checks if a probability value returns true based on the current seed
-     * @param probability
+     * @param probability value 0-100
      */
     public boolean isTrue(float probability) {
         probability = MathUtils.clamp(probability, 0, 100);
@@ -45,7 +46,7 @@ public class NumberGenerator {
      * @return
      */
     public int getRandomInteger(int max, int min) {
-        if ( max < min) throw new IllegalArgumentException("Min can't be larger than max!");
+        if ( max < min) throw new PhiException(PhiException.ErrorCode.E0004,"Min can't be larger than max!");
         return (int) (random.nextFloat() * (max - min) + min);
     }
 
@@ -56,6 +57,7 @@ public class NumberGenerator {
      * @return a random entry from array
      */
     public <T> T getRandomEntry(Array<T> array) {
+        if( array.isEmpty()) return null;
         if( array.size == 1) return array.get(0);
         int randomInteger = getRandomInteger(array.size, 0);
         return array.get(randomInteger);
@@ -68,6 +70,7 @@ public class NumberGenerator {
      * @return a random entry from array
      */
     public <T> T getRandomEntry(T[] array) {
+        if( array.length == 0) return null;
         if( array.length == 1) return array[0];
         int randomInteger = getRandomInteger(array.length, 0);
         return array[randomInteger];
@@ -80,6 +83,7 @@ public class NumberGenerator {
      * @return a random entry from array
      */
     public <T> T getRandomEntry(List<T> array) {
+        if( array.isEmpty()) return null;
         if( array.size() == 1) return array.get(0);
         int randomInteger = getRandomInteger(array.size(), 0);
         return array.get(randomInteger);
@@ -92,6 +96,8 @@ public class NumberGenerator {
      * @return
      */
     public <T> T getRandomEntry(Map<?, T> map) {
+        if( map.isEmpty()) return null;
+        if( map.size() == 1) return (T) map.values().toArray()[0];
         int randomInteger = getRandomInteger(map.size(), 0);
         return map.get( map.keySet().toArray()[randomInteger] );
     }
