@@ -15,13 +15,20 @@ import java.util.Random;
 public class NumberGenerator {
 
     private Random random;
+    private long seed;
 
     public NumberGenerator(long seed) {
+        this.seed = seed;
         this.random = new Random(seed);
     }
 
     public void setSeed(long seed) {
+        this.seed = seed;
         this.random = new Random(seed);
+    }
+
+    public long getSeed() {
+        return seed;
     }
 
     public float getRandomFloat(float max, float min) {
