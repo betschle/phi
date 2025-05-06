@@ -1,4 +1,85 @@
 package com.neutronio.phi.math;
 
+/**
+ * Randomly choses an entry from a {@link ProbabilitySet}.
+ */
 public class ProbabilitySetGenerator {
+
+    // TODO consider passing number generator as parameter on generate() method
+    private NumberGenerator numberGenerator = new NumberGenerator(0);
+
+    public ProbabilitySetGenerator() {
+    }
+
+    public ProbabilitySetGenerator(NumberGenerator generator) {
+        this.numberGenerator = generator;
+    }
+
+    public NumberGenerator getNumberGenerator() {
+        return numberGenerator;
+    }
+
+    public void setNumberGenerator(NumberGenerator numberGenerator) {
+        this.numberGenerator = numberGenerator;
+    }
+
+    public void setSeed(long seed) {
+        this.numberGenerator.setSeed(seed);
+    }
+
+
+    /**
+     * Guarantees returning one single entry. Similar to throwing a dart towards a target and obtaining
+     * the location of the dart.
+     * <br>
+     * <br>
+     * Suppose we have a probability set with the following weights:
+     * <pre>
+     *     A = 50, B = 20, C = 20
+     *     Sum = 90
+     * </pre>
+     *
+     * Then for Random = 60 expected output = B
+     * Visualization:
+     * <pre>
+     *            60
+     *             v
+     * [----A---][-B-][-C-]
+     * 0        50   70   90
+     * </pre>
+     * @param probabilitySet
+     * @param <T>
+     * @return
+     */
+    // TODO write a test for above test case
+    public <T> T generate(ProbabilitySet<T> probabilitySet) {
+        float number = this.numberGenerator.getRandomFloat( probabilitySet.sum(), 0);
+        return pickEntry(number, probabilitySet);
+    }
+
+    /**
+     * Picks an entry based on a random number.
+     * @param random expected range 0 to {@link ProbabilitySet#sum()}
+     * @param probabilitySet the set to pick an entry from
+     * @param <T>
+     * @return null if random is somehow not within range of the probabilitySet
+     */
+    protected <T> T pickEntry(float random, ProbabilitySet<T> probabilitySet) {
+        float min = 0;
+        float max = 0;
+        for( int i = 0; i < probabilitySet.size(); i++ ) {
+            if( i == 0) {
+                min = 0;
+                max = probabilitySet.getProbabilityAt(0);
+            } else {
+                min += probabilitySet.getProbabilityAt(i - 1);
+                max += probabilitySet.getProbabilityAt(i);
+            }
+
+            if( random >= min && random < max ) {
+                return probabilitySet.getItemAt(i);
+            }
+        }
+        return null;
+    }
 }
