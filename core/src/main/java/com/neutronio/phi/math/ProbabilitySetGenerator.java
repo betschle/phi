@@ -5,26 +5,8 @@ package com.neutronio.phi.math;
  */
 public class ProbabilitySetGenerator {
 
-    // TODO consider passing number generator as parameter on generate() method
-    private NumberGenerator numberGenerator = new NumberGenerator(0);
 
     public ProbabilitySetGenerator() {
-    }
-
-    public ProbabilitySetGenerator(NumberGenerator generator) {
-        this.numberGenerator = generator;
-    }
-
-    public NumberGenerator getNumberGenerator() {
-        return numberGenerator;
-    }
-
-    public void setNumberGenerator(NumberGenerator numberGenerator) {
-        this.numberGenerator = numberGenerator;
-    }
-
-    public void setSeed(long seed) {
-        this.numberGenerator.setSeed(seed);
     }
 
 
@@ -47,13 +29,13 @@ public class ProbabilitySetGenerator {
      * [----A---][-B-][-C-]
      * 0        50   70   90
      * </pre>
+     * @param generator the number generator to use
      * @param probabilitySet
      * @param <T>
      * @return
      */
-    // TODO write a test for above test case
-    public <T> T generate(ProbabilitySet<T> probabilitySet) {
-        float number = this.numberGenerator.getRandomFloat( probabilitySet.sum(), 0);
+    public <T> T generate(NumberGenerator generator, ProbabilitySet<T> probabilitySet) {
+        float number = generator.getRandomFloat( probabilitySet.sum(), 0);
         return pickEntry(number, probabilitySet);
     }
 

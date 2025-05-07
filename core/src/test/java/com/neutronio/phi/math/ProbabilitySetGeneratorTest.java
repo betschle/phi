@@ -25,13 +25,14 @@ public class ProbabilitySetGeneratorTest {
 
     @Test
     public void generate() {
+        NumberGenerator numberGenerator = new NumberGenerator(333);
         ProbabilitySet<String> probabilitySet = new ProbabilitySet<>();
         probabilitySet.addProbability("A", 50);
         probabilitySet.addProbability("B", 20);
         probabilitySet.addProbability("C", 20);
 
         ProbabilitySetGenerator generator = new ProbabilitySetGenerator();
-        String generated = generator.generate(probabilitySet);
+        String generated = generator.generate(numberGenerator, probabilitySet);
         Assertions.assertTrue( generated.equals("A") || generated.equals("B") || generated.equals("C") );
     }
 
