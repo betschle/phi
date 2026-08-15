@@ -3,9 +3,11 @@ plugins {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-eclipse.project.name = appName + '-core'
+def subprojectName = 'ui'
+eclipse.project.name = appName + '-' + subprojectName
 
 dependencies {
+  implementation project(':core')
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -33,7 +35,7 @@ test {
 jar {
   // define source directory
   sourceSets.main.java.srcDirs = [ "src/main/java" ]
-  archivesBaseName = appName + '-core'
+  archivesBaseName = appName + '-ui'
   manifest {
     attributes(
       'AppName'        : "${archivesBaseName}",
