@@ -92,7 +92,6 @@ public class Grid<C> implements Serializable {
      */
     public boolean isEmpty(int x, int y) {
         if(this.isInBounds(x, y)) {
-
             return this.cells[x][y] == null;
         }
         return true;

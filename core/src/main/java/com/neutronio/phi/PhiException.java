@@ -12,7 +12,8 @@ package com.neutronio.phi;
  * </ul>
  */
 public class PhiException extends RuntimeException {
-
+    // Update with AstraXException extends PhiException
+    // TODO needs framework specific error codes
     public enum ErrorCode {
 
         // ==== General Errors ====

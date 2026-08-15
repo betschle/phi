@@ -1,5 +1,6 @@
 package com.neutronio.phi.util;
 
+import com.neutronio.phi.util.collections.Tree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

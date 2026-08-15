@@ -1,6 +1,7 @@
 package com.neutronio.phi.util;
 
 import com.neutronio.phi.PhiException;
+import com.neutronio.phi.util.metrics.Counter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

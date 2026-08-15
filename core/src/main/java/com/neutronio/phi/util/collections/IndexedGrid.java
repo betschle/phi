@@ -3,6 +3,7 @@ package com.neutronio.phi.util.collections;
 
 import com.neutronio.phi.PhiException;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
  *
  * @param <T> the cell type
  */
-public class IndexedGrid<T> {
+public class IndexedGrid<T> implements Serializable {
 
     /** Current map ID */
     private long currentID = Long.MIN_VALUE;

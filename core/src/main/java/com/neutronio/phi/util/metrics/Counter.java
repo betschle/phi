@@ -1,4 +1,4 @@
-package com.neutronio.phi.util;
+package com.neutronio.phi.util.metrics;
 
 import com.neutronio.phi.PhiException;
 

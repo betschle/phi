@@ -1,4 +1,4 @@
-package com.neutronio.phi.util;
+package com.neutronio.phi.math;
 
 import java.io.Serializable;
 import java.util.Objects;

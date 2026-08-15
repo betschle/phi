@@ -1,17 +1,25 @@
 package com.neutronio.phi.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.neutronio.phi.PhiException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.zip.Deflater;
 
 /**
  * General App utilities.
@@ -19,6 +27,7 @@ import java.util.logging.Logger;
 public class AppUtil {
 
     protected static Logger logger = Logger.getLogger(AppUtil.class.getCanonicalName());
+    public static SimpleDateFormat screenshotDateFormat = new SimpleDateFormat("hh-mm-ss_dd-MM-yyyy");
 
     /**
      * Initializes up logging via JUL. Expects a logging.properties file
@@ -61,5 +70,57 @@ public class AppUtil {
         } catch (IOException e) {
             throw new PhiException(PhiException.ErrorCode.E1010, e);
         }
+    }
+
+    /**
+     *
+     * @param userDirectory
+     */
+    public static void takeScreenshot(FileHandle userDirectory) {
+        Pixmap pixmap = Pixmap.createFromFrameBuffer(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+        ByteBuffer pixels = pixmap.getPixels();
+
+        // This loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
+        int size = Gdx.graphics.getBackBufferWidth() * Gdx.graphics.getBackBufferHeight() * 4;
+        for (int i = 3; i < size; i += 4) {
+            pixels.put(i, (byte) 255);
+        }
+
+        FileHandle directory = userDirectory.child("/screenshots/");
+
+        if( !directory.file().exists() ) {
+            directory.file().mkdir();
+        }
+
+        FileHandle fileHandle = directory.child("screenshot_" + screenshotDateFormat.format( new Date() ) + ".jpg");
+        PixmapIO.writePNG(fileHandle, pixmap, Deflater.DEFAULT_COMPRESSION, true);
+        pixmap.dispose();
+    }
+
+    /**
+     *
+     */
+    public static void takeScreenshot() {
+        Pixmap pixmap = Pixmap.createFromFrameBuffer(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+        ByteBuffer pixels = pixmap.getPixels();
+
+        // This loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
+        int size = Gdx.graphics.getBackBufferWidth() * Gdx.graphics.getBackBufferHeight() * 4;
+        for (int i = 3; i < size; i += 4) {
+            pixels.put(i, (byte) 255);
+        }
+
+        String directory = "screenshots/";
+
+        FileHandle directoryHandle = Gdx.files.local(directory);
+        if( !directoryHandle.file().exists() ) {
+            directoryHandle.file().mkdir();
+        }
+
+        String filename = directory +"screenshot_" + screenshotDateFormat.format(new Date());
+        FileHandle fileHandle = Gdx.files.local(filename + ".jpg");
+
+        PixmapIO.writePNG(fileHandle, pixmap, Deflater.DEFAULT_COMPRESSION, true);
+        pixmap.dispose();
     }
 }

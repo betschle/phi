@@ -1,0 +1,125 @@
+package com.neutronio.phi.io;
+
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.neutronio.phi.app.Message;
+
+import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * A FileHandler in plain old java, without gdx framework dependencies.
+ * WARNING: for now, fileLocation parameter is consistently ignored here, implement it if necessary!
+ */
+public class JavaFileHandler implements FileHandler {
+
+    // TODO write automated tests!
+    // TODO This filehandler does not wark in conjunction with astrax blueprint loader
+    // TODO confirm this handler works in packaged state as well (internal and external resources need to be able to be referenced)
+    @Override
+    public boolean deleteFile(GDXFileHandler.PhiFile file) {
+        return file.file.delete();
+    }
+
+    @Override
+    public List<GDXFileHandler.PhiFile> readFilesInDirectory(String path, FileLocation location, String glob) throws IOException, GdxRuntimeException {
+        File rootDirectory = new File(path); // location?
+        DirectoryStream<Path> dirs = Files.newDirectoryStream(rootDirectory.toPath(), glob);
+        List<GDXFileHandler.PhiFile> directories = new ArrayList<>();
+        Iterator<Path> iterator = dirs.iterator();
+        while (iterator.hasNext()) {
+            Path directory = iterator.next();
+            directories.add(new GDXFileHandler.PhiFile(directory.toFile(), path, location));
+        }
+        dirs.close();
+        return directories;
+    }
+
+    @Override
+    public StringBuilder readFileContents(String path, FileLocation location) throws IOException {
+
+        InputStream stream = null;
+        StringBuilder builder = new StringBuilder();
+        switch (location) {
+            case INTERNAL:
+            case CLASSPATH: {
+                stream = this.getClass().getClassLoader().getResourceAsStream(path); // confirmed to work
+                break;
+            }
+            default: {
+                stream = new FileInputStream(path); // confirmed to work
+                break;
+            }
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String currentLine = "";
+        while ((currentLine = reader.readLine()) != null) {
+            builder.append(currentLine);
+        }
+        reader.close();
+        return builder;
+    }
+
+    @Override
+    public State saveFileContents(String data, String path, FileLocation location) throws IOException {
+        return saveFileContents(data, path, location, false);
+    }
+
+    @Override
+    public State saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
+        // Note: cannot save to file locations INTERNAL, CLASSPATH
+        File file = new File(path);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write(data);
+
+            if (writer != null)
+                writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return State.FAILED;
+        }
+        return State.SAVED;
+    }
+
+    // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
+    public State saveFileBinary(Serializable savable, String path, FileLocation location) {
+        Message message = new Message();
+        FileOutputStream fileOutputStream = null;
+        State state = null;
+        try {
+            fileOutputStream = new FileOutputStream(path);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(savable);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+            state = State.SAVED;
+        } catch (IOException e) {
+            e.printStackTrace();
+            state = State.FAILED;
+        }
+        return state;
+    }
+
+
+    // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
+    @Override
+    public <T extends Serializable> T readFileBinary(String path, FileLocation location) {
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(path);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            T loaded = (T) objectInputStream.readObject();
+            objectInputStream.close();
+            return loaded;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
