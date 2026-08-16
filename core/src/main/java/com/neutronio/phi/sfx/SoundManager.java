@@ -181,7 +181,7 @@ public class SoundManager {
             // stop all sound instances belonging to SoundToLoad and dispose sound object
             soundObject.stop();
             soundObject.dispose();
-            this.sounds.put(sound.identifier, null);
+            this.sounds.remove(sound.identifier);
         }
     }
 

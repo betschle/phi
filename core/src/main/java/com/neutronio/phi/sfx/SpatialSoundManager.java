@@ -12,7 +12,7 @@ import java.util.List;
  * Plays sound according to distance and location in a scene.
  */
 public class SpatialSoundManager extends SoundManager {
-    // TODO SpatialSoundManager and SoundManager need a common interface here to work with AstraX (possibly)
+    // TODO SpatialSoundManager and SoundManager need a common interface here to be able to load sounds!!!
     //  I dont think SpatialSoundManager requires any of the regular SoundManager functionality.
     //  There are two flavors of similar functionality and the same structural pattern here that also
     //  require the same classes (SoundManager - logic, SoundInstance - logic helper class, SoundToLoad - class for loading)
