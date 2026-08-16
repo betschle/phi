@@ -1,9 +1,11 @@
 ## Gradle:
 .gradle/
+gradle/
 gradle-app.setting
 /build/
 /android/build/
 /core/build/
+/ui/build/
 /lwjgl2/build/
 /lwjgl3/build/
 /html/build/
@@ -79,6 +81,7 @@ www-test/
 /shared/bin/
 *.tmp
 *.bak
+*.bak
 *.swp
 *~.nib
 .settings/
@@ -118,6 +121,7 @@ www-test/
 /dist/
 /android/dist/
 /core/dist/
+/ui/dist/
 /lwjgl2/dist/
 /lwjgl3/dist/
 /html/dist/
