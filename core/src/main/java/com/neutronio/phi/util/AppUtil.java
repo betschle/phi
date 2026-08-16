@@ -43,7 +43,7 @@ public class AppUtil {
             fis.close();
             logger.log(Level.INFO, "Logging initialized!");
         } catch (IOException e) {
-            throw new PhiException(PhiException.ErrorCode.E1010,
+            throw new PhiException(PhiException.ErrorCode.E0022,
                 "Could not initialize logging with default config file: " + file.toPath());
         } finally {
             if (fis != null) {
@@ -71,9 +71,9 @@ public class AppUtil {
             byte[] encoded = Files.readAllBytes(Paths.get("version"));
             return new String(encoded, Charset.forName("UTF-8"));
         } catch (FileNotFoundException e) {
-            throw new PhiException(PhiException.ErrorCode.E1000, "version", e);
+            throw new PhiException(PhiException.ErrorCode.E0020, "version", e);
         } catch (IOException e) {
-            throw new PhiException(PhiException.ErrorCode.E1010, e);
+            throw new PhiException(PhiException.ErrorCode.E0022, e);
         }
     }
 

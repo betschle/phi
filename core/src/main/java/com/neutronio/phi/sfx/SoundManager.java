@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -62,7 +63,7 @@ public class SoundManager {
             this.usageChecker.addId(soundID);
             this.sounds.put(soundID, sound);
         } else {
-            Gdx.app.debug(this.getClass().getCanonicalName(), "Could not add sound!");
+            logger.log(Level.WARNING, "Could not add sound!");
         }
     }
 

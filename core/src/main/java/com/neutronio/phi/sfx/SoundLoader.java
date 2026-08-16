@@ -31,6 +31,12 @@ public class SoundLoader {
         return soundManager;
     }
 
+    /**
+     * Loads sounds from a settings object into an existing sound manager.
+     * @param soundManager the sound manager to add the sounds to
+     * @param directory additional directory
+     * @param settings the object that contains sound configuration
+     */
     public void load(SoundManager soundManager, String directory, SoundSettings settings) {
         logger.log(Level.INFO, "Loading sounds into manager %s", soundManager.name);
         for(SoundSettings.SoundToLoad sound : settings.getSoundsToLoad(soundManager.name)) {
@@ -39,6 +45,11 @@ public class SoundLoader {
         }
     }
 
+    /**
+     * Unloads sounds based on a settings object
+     * @param soundManager the sound manager to remove the sounds from
+     * @param settings the object that contains sound configuration to remove
+     */
     public void unload(SoundManager soundManager, SoundSettings settings) {
         logger.log(Level.INFO, "Unloading sounds from manager %s", soundManager.name);
         soundManager.unloadSounds(settings.getSoundsToLoad(soundManager.name));

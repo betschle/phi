@@ -14,9 +14,12 @@ package com.neutronio.phi;
 public class PhiException extends RuntimeException {
     // Update with AstraXException extends PhiException
     // TODO needs framework specific error codes
+    /*
+        Instead of error codes I can just use classes... duh
+     */
     public enum ErrorCode {
 
-        // ==== General Errors ====
+        // ======== General, low-level Errors ========
         /** Error not specified */
         E0000("Error not specified"),
         /** Something was not initialized properly */
@@ -28,7 +31,7 @@ public class PhiException extends RuntimeException {
         /** Syntax error */
         E0005("Syntax Error"), // new
 
-        // ==== reflection errors ====
+        // ==== reflection ====
         /** Class not found */
         E0010("Class not found"), // new
         /** Method not found */
@@ -38,17 +41,17 @@ public class PhiException extends RuntimeException {
         /** Program expected an annotation, but it was not found. */
         E0013("Annotation expected, but is missing"),
 
-        // ==== IO Operations/IO Exceptions ====
+        // ==== IO ====
         /** File not found */
-        E1000("File not found"),
+        E0020("File not found"),
         /** File already exists */
-        E1001("File already exists"), // new
+        E0021("File already exists"), // new
         /** Could not open file */
-        E1010("Could not open file"),
+        E0022("Could not open file"),
         /** Could not open file due to file already in use */
-        E1011("File already in use"),
+        E0023("File already in use"),
         /** Could not open file due to no read access*/
-        E1012("No access to file"),
+        E0024("No access to file"),
 
         // ==== Serialization ====
         /** Could not read Object */
