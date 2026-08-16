@@ -17,6 +17,9 @@ allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
+  // read out version from file
+  version = rootProject.file('version').text.trim()
+
   // This allows you to "Build and run using IntelliJ IDEA", an option in IDEA's Settings.
   idea {
     module {
@@ -58,7 +61,6 @@ configure(subprojects) {
 }
 
 subprojects {
-  version = "$projectVersion"
   ext.appName = 'phi'
   repositories {
     mavenCentral()
