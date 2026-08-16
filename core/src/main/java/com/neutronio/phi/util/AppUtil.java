@@ -33,7 +33,7 @@ public class AppUtil {
      * Initializes up logging via JUL. Expects a logging.properties file
      * in root directory.
      */
-    public void setupLogging() {
+    public static void setupLogging() {
         FileInputStream fis = null;
         File file = Paths.get("logging.properties").toFile();
         try {
@@ -57,11 +57,16 @@ public class AppUtil {
     }
 
     /**
-     * Reads out the version from a version file that contains the version string.
+     * Reads out a version text from a version file.
+     * This is meant to retrieve the version of any game using this
+     * framework and keep it coherent with version that is
+     * present in the project management tool (e.g. maven or gradle).
+     * It is assumed a file called "version" (no extension) exists
+     * in the project root and only contains a single line with version text.
      * @return null if an error occurred
      */
-    public String readVersion() {
-        this.logger.log(Level.INFO, "Reading Version...");
+    public static String readVersion() {
+        logger.log(Level.INFO, "Reading Version...");
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("version"));
             return new String(encoded, Charset.forName("UTF-8"));
