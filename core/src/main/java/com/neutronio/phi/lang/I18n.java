@@ -43,6 +43,23 @@ public class I18n {
     }
 
     /**
+     * Translates an enum whose key was generated with TranslationGenerator
+     * @param element
+     * @return
+     * @throws MissingResourceException
+     */
+    public String translateEnum(Enum element) throws MissingResourceException {
+        String translated = null;
+        String key = element.getClass().getSimpleName() + "_" + element.name().toLowerCase(Locale.ROOT);
+        if(this.resourceBundles.get(currentLocale).containsKey(key)) {
+            translated = this.resourceBundles.get(currentLocale).getString(key);
+        } else {
+            translated = this.baseBundle.getString(key);
+        }
+        return translated;
+    }
+
+    /**
      * Translates, then formats String with provided parameters
      * @param key
      * @param params

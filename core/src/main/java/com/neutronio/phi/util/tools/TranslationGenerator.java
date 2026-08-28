@@ -16,6 +16,8 @@ import java.util.*;
  */
 public class TranslationGenerator {
 
+    // TODO this does not use the FileHandler. Mostly cause of property file loading
+    // TODO csv import/export would be nice
     /**
      * Turns a properties object into a list of property keys.
      * @param properties
@@ -25,6 +27,20 @@ public class TranslationGenerator {
         Enumeration<Object> keys = properties.keys();
         while( keys.hasMoreElements() ) {
             propertyList.add((String) keys.nextElement());
+        }
+        return propertyList;
+    }
+
+    /**
+     * Creates a list of translation identifiers for an enum,
+     * for an enum variable called FieldType.METHOD the output identifier is "FieldType_method"
+     * @param values
+     * @return
+     */
+    public static List<String> generatePropertiesFromEnum(Enum[] values) {
+        List<String> propertyList = new ArrayList<>();
+        for(Enum element : values) {
+            propertyList.add(element.getClass().getSimpleName() + "_" + element.name().toLowerCase(Locale.ROOT));
         }
         return propertyList;
     }
@@ -44,12 +60,12 @@ public class TranslationGenerator {
                 " * Do not manually edit this! Instead, add translation strings to the \n" +
                 " * translation properties file and run the generator again. \n\n"+
                 " * Generated: " + DateFormats.FULL.format(new Date()) + "\n\n" +
-                " * @see com.neutronio.astrax.util.tools.TranslationGenerator\n" +
+                " * @see \n" + this.getClass().getCanonicalName() +
                 " */\n" ;
         String classCode = "public class %s {\n%s}";
         StringBuilder fields = new StringBuilder();
         for(String key : propertyKeys) {
-            // TODO add content of keys as explanation`?
+            // TODO add content of keys as explanation?
             fields.append("   ").append("public static final String ").append(key.toUpperCase()).append(" = ").append("\"").append(key).append("\";\n");
         }
         return packageCode + comment + String.format(classCode, className, fields);
@@ -66,7 +82,7 @@ public class TranslationGenerator {
     public void generateAndSaveCode(String sourcePropertyFile, String className, String packageName, String destPath) {
         Properties properties = new Properties();
         try {
-            properties.load( new FileInputStream(sourcePropertyFile));
+            properties.load(new FileInputStream(sourcePropertyFile));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,14 +97,14 @@ public class TranslationGenerator {
         String destination = destPath + "/"+ packageName.replace('.', '/') + "/" + className + ".java";
         try {
             File file = new File(destination);
-            if( !file.exists() ) file.createNewFile();
+            if(!file.exists()) file.createNewFile();
             javaFileHandler.saveFileContents(generatedCode, file.getPath(), null, true );
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main( String[] args) {
+    public static void main(String[] args) {
         TranslationGenerator translationGenerator = new TranslationGenerator();
         translationGenerator.generateAndSaveCode(
                 "core/assets/lang/phi.properties",
