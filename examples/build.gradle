@@ -1,0 +1,33 @@
+plugins {
+  id 'net.nemerosa.versioning' version '2.6.1'
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+def subprojectName = 'examples'
+eclipse.project.name = appName + '-' + subprojectName
+
+dependencies {
+  implementation project(':core')
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+  api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+  api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+  // https://mvnrepository.com/artifact/org.json/json
+  implementation group: 'org.json', name: 'json', version: "$jsonVersion"
+  implementation "space.earlygrey:shapedrawer:$shapeDrawerVersion"
+  testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
+  testImplementation("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
+  implementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
+  implementation("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+
+  if(enableGraalNative == 'true') {
+    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+  }
+}
+
+test {
+  useJUnitPlatform()
+  maxHeapSize = '1G'
+}
