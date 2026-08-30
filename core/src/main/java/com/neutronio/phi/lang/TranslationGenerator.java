@@ -1,7 +1,5 @@
 package com.neutronio.phi.lang;
 
-import com.neutronio.phi.app.Message;
-import com.neutronio.phi.io.FileHandler;
 import com.neutronio.phi.io.JavaFileHandler;
 import com.neutronio.phi.util.format.DateFormats;
 
