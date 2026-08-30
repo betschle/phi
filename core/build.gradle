@@ -1,6 +1,9 @@
 plugins {
+  id 'maven-publish'
   id 'net.nemerosa.versioning' version '2.6.1'
 }
+
+def subprojectName = 'core'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
@@ -42,6 +45,18 @@ jar {
       'Build-Revision' : versioning.info.commit,
       'Created-By'     : "Gradle ${gradle.gradleVersion}",
     )
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId = 'com.neutronio.phi'
+      artifactId = archivesBaseName
+      version = version
+
+      from components.java
+    }
   }
 }
 

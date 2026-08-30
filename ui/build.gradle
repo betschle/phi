@@ -1,9 +1,10 @@
 plugins {
   id 'net.nemerosa.versioning' version '2.6.1'
+  id 'maven-publish'
 }
+def subprojectName = 'ui'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-def subprojectName = 'ui'
 eclipse.project.name = appName + '-' + subprojectName
 
 dependencies {
@@ -44,6 +45,18 @@ jar {
       'Build-Revision' : versioning.info.commit,
       'Created-By'     : "Gradle ${gradle.gradleVersion}",
     )
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId = 'com.neutronio.phi'
+      artifactId = archivesBaseName
+      version = version
+
+      from components.java
+    }
   }
 }
 
