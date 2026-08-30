@@ -41,6 +41,7 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         while( keys.hasMoreElements() ) {
             propertyList.add((String) keys.nextElement());
         }
+        Collections.sort(propertyList);
         return propertyList;
     }
 
@@ -149,7 +150,6 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         }
 
         List<String> convert = this.convertToIdentifiers(properties);
-        Collections.sort(convert);
 
         String generatedCode = this.generateCode(packageName, className, convert);
 
