@@ -14,6 +14,7 @@ import java.util.List;
 public interface FileHandler {
 
     // TODO translation should be handled differently here, use translation modifier by name convention, e.g. STATE_SAVED
+    // TODO Rename to FileHandleStatus ? FileOperationStatus ?
     enum State {
         SAVED(Message.MessageType.SUCCESS, ""), //AstraXAppTranslations.FILE_SAVED_SUCCESS
         DELETED(Message.MessageType.SUCCESS, ""), // AstraXAppTranslations.FILE_DELETED_SUCCESS
