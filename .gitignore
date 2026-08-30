@@ -172,3 +172,5 @@ Thumbs.db
 **/resource-config.json
 core/src/main/java/com/neutronio/phi/io/json/notes
 core/src/main/java/modules
+gradlew
+gradlew.bat
