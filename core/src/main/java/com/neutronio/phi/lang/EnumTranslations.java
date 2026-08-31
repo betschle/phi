@@ -136,11 +136,4 @@ public class EnumTranslations {
     public EnumTranslation getTranslation(Enum enumConstant) {
         return this.enumTranslations.get(enumConstant);
     }
-
-    public static void main(String[] args) {
-        EnumTranslations translations = new EnumTranslations();
-        translations.setTranslationsAsName(FileHandler.FileOperationStatus.values());
-        translations.setTranslationsAsNameAndDescription(Message.MessageType.values());
-        EnumTranslation translation = translations.getTranslation(Message.MessageType.ALERT);
-    }
 }
