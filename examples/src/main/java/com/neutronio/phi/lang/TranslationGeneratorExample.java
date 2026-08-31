@@ -3,8 +3,6 @@ package com.neutronio.phi.lang;
 import com.neutronio.phi.app.Message;
 import com.neutronio.phi.io.FileHandler;
 
-import java.util.List;
-
 public class TranslationGeneratorExample {
 
     public enum ServerStatus {
@@ -28,7 +26,7 @@ public class TranslationGeneratorExample {
         configuration.enumTranslations = new EnumTranslations();
 
         // only use translation identifier: enum.name()_name
-        configuration.enumTranslations.setTranslationsAsName(FileHandler.State.values());
+        configuration.enumTranslations.setTranslationsAsName(FileHandler.FileOperationStatus.values());
         // use boh names + descriptions identifiers
         configuration.enumTranslations.setTranslationsAsNameAndDescription(Message.MessageType.values());
         // use custom identifier suffix

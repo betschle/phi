@@ -1,5 +1,6 @@
 package com.neutronio.phi.io;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.neutronio.phi.app.Message;
 
@@ -15,27 +16,41 @@ public interface FileHandler {
 
     // TODO translation should be handled differently here, use translation modifier by name convention, e.g. STATE_SAVED
     // TODO Rename to FileHandleStatus ? FileOperationStatus ?
-    enum State {
-        SAVED(Message.MessageType.SUCCESS, ""), //AstraXAppTranslations.FILE_SAVED_SUCCESS
-        DELETED(Message.MessageType.SUCCESS, ""), // AstraXAppTranslations.FILE_DELETED_SUCCESS
-        ABORTED(Message.MessageType.WARNING, ""), // AstraXAppTranslations.FILE_OPERATION_ABORTED
-        FAILED(Message.MessageType.EXCEPTION, ""); // AstraXAppTranslations.FILE_OPERATION_FAILED
+
+    /**
+     * Enum that defines status of file operation in FileHandler implementations.
+     */
+    enum FileOperationStatus {
+        /** File was saved successfully */
+        SAVED(Message.MessageType.SUCCESS),
+        /** File was loaded successfully */
+        LOADED(Message.MessageType.SUCCESS),
+        /** File was deleted successfully */
+        DELETED(Message.MessageType.SUCCESS),
+        /** File operation could not be executed and was aborted (e.g. because write protection is on) */
+        ABORTED(Message.MessageType.WARNING),
+        /** File operation critical error */
+        FAILED(Message.MessageType.EXCEPTION);
 
         public final Message.MessageType messageType;
-        public final String message;
 
-        State(Message.MessageType messageType, String messageTranslation) {
+        FileOperationStatus(Message.MessageType messageType) {
             this.messageType = messageType;
-            this.message = messageTranslation;
         }
     }
 
-    enum FileLocation {
+    /**
+     * Describes a file location and determines how file paths are interpreted.
+     * Maps to FileHandle methods in {@link com.badlogic.gdx.Gdx#files}
+     */
+    enum FileLocation { // TODO replace with com.badlogic.gdx.Files.FileType
+        /** Absolute path relative to the current drive */
         ABSOLUTE,
+        /** Internal path relative to the projects, including internal resources */
         INTERNAL,
-        /** Contained in the current datapack. Not yet implemneted*/
-        DATAPACK,
+        /** Local path of the current drive, not including internal sources */
         LOCAL,
+        /** Classpath i.e. "inside" the project, including assets and resources */
         CLASSPATH,
         EXTERNAL;
     }
@@ -79,7 +94,7 @@ public interface FileHandler {
      * @param location file location, determines how path is interpreted
      * @return a status message
      */
-    State saveFileContents(String data, String path, FileLocation location) throws IOException;
+    FileOperationStatus saveFileContents(String data, String path, FileLocation location) throws IOException;
 
     /**
      * Saves text content to a text-based file
@@ -90,7 +105,7 @@ public interface FileHandler {
      * @return a status. SAVED if successful, ABORTED if file already exists and overwrite protection is on.
      * @throws IOException if the on error occurred closing the stream after an error usage
      */
-    State saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException;
+    FileOperationStatus saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException;
 
     /**
      * Saves bytes to a binary file
@@ -99,5 +114,5 @@ public interface FileHandler {
      * @param location file location, determines how path is interpreted
      * @return a status. SAVED if successful, ABORTED if file already exists.
      */
-    State saveFileBinary(Serializable savable, String path, FileLocation location) throws IOException;
+    FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) throws IOException;
 }

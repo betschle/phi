@@ -110,54 +110,54 @@ public class GDXFileHandler implements FileHandler {
     }
 
     @Override
-    public State saveFileContents(String data, String path, FileLocation location) throws IOException {
+    public FileOperationStatus saveFileContents(String data, String path, FileLocation location) throws IOException {
         return saveFileContents(data, path, location, false);
     }
 
     @Override
-    public State saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
+    public FileOperationStatus saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
         FileHandle fileHandle = toGdxFileHandle(path, location);
         File file = fileHandle.file();
-        State state = null;
+        FileOperationStatus fileOperationStatus = null;
         if( !file.exists() ) {
             file.createNewFile();
             this.save(file, data);
-            state = State.SAVED;
+            fileOperationStatus = FileOperationStatus.SAVED;
         } else if( overwrite ) {
             this.save(file, data);
-            state = State.SAVED;
+            fileOperationStatus = FileOperationStatus.SAVED;
         } else {
-            state = State.ABORTED;
+            fileOperationStatus = FileOperationStatus.ABORTED;
         }
-        return state;
+        return fileOperationStatus;
     }
 
     // TODO test this
     // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
     @Override
-    public State saveFileBinary(Serializable savable, String path, FileLocation location) {
+    public FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) {
         FileHandle fileHandle = toGdxFileHandle(path, location);
         FileOutputStream fileOutputStream = null;
-        State state = null;
+        FileOperationStatus fileOperationStatus = null;
         try {
             fileOutputStream = new FileOutputStream(fileHandle.path());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(savable);
             objectOutputStream.flush();
             objectOutputStream.close();
-            state = State.SAVED;
+            fileOperationStatus = FileOperationStatus.SAVED;
         } catch (IOException e) {
             e.printStackTrace();
-            state = State.FAILED;
+            fileOperationStatus = FileOperationStatus.FAILED;
         }
-        return state;
+        return fileOperationStatus;
     }
 
     // TODO test this
     // TODO error should be thrown here instead of return Message
-    public State saveFileBinary(Serializable savable, String fileName, FileHandle parentDirectory) {
+    public FileOperationStatus saveFileBinary(Serializable savable, String fileName, FileHandle parentDirectory) {
         FileOutputStream fileOutputStream = null;
-        State state = null;
+        FileOperationStatus fileOperationStatus = null;
         try {
             parentDirectory.mkdirs();
             fileOutputStream = new FileOutputStream(parentDirectory.child(fileName).path());
@@ -165,12 +165,12 @@ public class GDXFileHandler implements FileHandler {
             objectOutputStream.writeObject(savable);
             objectOutputStream.flush();
             objectOutputStream.close();
-            state = State.SAVED;
+            fileOperationStatus = FileOperationStatus.SAVED;
         } catch (IOException e) {
             e.printStackTrace();
-            state = State.FAILED;
+            fileOperationStatus = FileOperationStatus.FAILED;
         }
-        return state;
+        return fileOperationStatus;
     }
 
     // TODO test this

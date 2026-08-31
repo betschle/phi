@@ -65,12 +65,12 @@ public class JavaFileHandler implements FileHandler {
     }
 
     @Override
-    public State saveFileContents(String data, String path, FileLocation location) throws IOException {
+    public FileOperationStatus saveFileContents(String data, String path, FileLocation location) throws IOException {
         return saveFileContents(data, path, location, false);
     }
 
     @Override
-    public State saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
+    public FileOperationStatus saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
         // Note: cannot save to file locations INTERNAL, CLASSPATH
         File file = new File(path);
         BufferedWriter writer = null;
@@ -82,28 +82,28 @@ public class JavaFileHandler implements FileHandler {
                 writer.close();
         } catch (IOException ex) {
             ex.printStackTrace();
-            return State.FAILED;
+            return FileOperationStatus.FAILED;
         }
-        return State.SAVED;
+        return FileOperationStatus.SAVED;
     }
 
     // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
-    public State saveFileBinary(Serializable savable, String path, FileLocation location) {
+    public FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) {
         Message message = new Message();
         FileOutputStream fileOutputStream = null;
-        State state = null;
+        FileOperationStatus fileOperationStatus = null;
         try {
             fileOutputStream = new FileOutputStream(path);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(savable);
             objectOutputStream.flush();
             objectOutputStream.close();
-            state = State.SAVED;
+            fileOperationStatus = FileOperationStatus.SAVED;
         } catch (IOException e) {
             e.printStackTrace();
-            state = State.FAILED;
+            fileOperationStatus = FileOperationStatus.FAILED;
         }
-        return state;
+        return fileOperationStatus;
     }
 
 
