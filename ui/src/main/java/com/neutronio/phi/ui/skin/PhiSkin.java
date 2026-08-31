@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.neutronio.phi.io.FileHandler;
 import com.neutronio.phi.io.GDXFileHandler;
+import com.neutronio.phi.sfx.ButtonSounds;
+import com.neutronio.phi.sfx.SoundSettings;
 import com.neutronio.phi.util.ColorUtil;
 import com.neutronio.phi.util.metrics.UsageChecker;
 
@@ -23,13 +25,13 @@ import java.util.Map;
 /**
  * A skin that allows for color themes, that are injected into the skin file before it is loaded.
  */
-public class PhiSkin extends Skin { // AstraXSkin
+public class PhiSkin extends Skin { // formerly AstraXSkin
 
-    private String baseDirectory;
-    private FileHandler fileHandler = new GDXFileHandler();
-    private SkinConfiguration skinConfiguration;
-    private UsageChecker usageChecker = new UsageChecker();
-//    private SoundSettings soundSettings; // TODO reactivate
+    protected String baseDirectory;
+    protected FileHandler fileHandler = new GDXFileHandler();
+    protected SkinConfiguration skinConfiguration;
+    protected UsageChecker usageChecker = new UsageChecker();
+    protected SoundSettings soundSettings;
 
     static private final Class[] defaultTagClasses = {BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class,
         SpriteDrawable.class, TextureRegionDrawable.class, TiledDrawable.class, Button.ButtonStyle.class,
@@ -37,8 +39,7 @@ public class PhiSkin extends Skin { // AstraXSkin
         Label.LabelStyle.class, List.ListStyle.class, ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class,
         SelectBox.SelectBoxStyle.class, Slider.SliderStyle.class, SplitPane.SplitPaneStyle.class, TextButton.TextButtonStyle.class,
         TextField.TextFieldStyle.class, TextTooltip.TextTooltipStyle.class, Touchpad.TouchpadStyle.class, Tree.TreeStyle.class,
-        Window.WindowStyle.class,
-//        ButtonSounds.class
+        Window.WindowStyle.class, ButtonSounds.class
     };
 
     private final ObjectMap<String, Class> jsonClassTags = new ObjectMap(defaultTagClasses.length);
@@ -60,13 +61,17 @@ public class PhiSkin extends Skin { // AstraXSkin
         this.fileHandler = fileHandler;
     }
 
-//    public void setSoundSettings(SoundSettings soundSettings) {
-//        this.soundSettings = soundSettings;
-//    }
-//
-//    public SoundSettings getSoundSettings() {
-//        return soundSettings;
-//    }
+    public void setSoundSettings(SoundSettings soundSettings) {
+        this.soundSettings = soundSettings;
+    }
+
+    public SoundSettings getSoundSettings() {
+        return soundSettings;
+    }
+
+    public SkinConfiguration getSkinConfiguration() {
+        return skinConfiguration;
+    }
 
     /** Adds all resources in the specified skin JSON file. */
     public void load (String path, FileHandler.FileLocation fileLocation, SkinConfiguration skinSettings) {
@@ -285,15 +290,15 @@ public class PhiSkin extends Skin { // AstraXSkin
             }
         });
 
-//        json.setSerializer(ButtonSounds.class, new Json.ReadOnlySerializer() {
-//            public Object read (Json json, JsonValue jsonData, Class type) {
-//                ButtonSounds buttonSounds = new ButtonSounds();
-//                buttonSounds.soundPressed = json.readValue("soundPressed", String.class, (String) null, jsonData);
-//                buttonSounds.soundRelease = json.readValue("soundRelease", String.class, (String) null, jsonData);
-//                buttonSounds.soundOver = json.readValue("soundOver", String.class, (String) null, jsonData);
-//                return buttonSounds;
-//            }
-//        });
+        json.setSerializer(ButtonSounds.class, new Json.ReadOnlySerializer() {
+            public Object read (Json json, JsonValue jsonData, Class type) {
+                ButtonSounds buttonSounds = new ButtonSounds();
+                buttonSounds.soundPressed = json.readValue("soundPressed", String.class, (String) null, jsonData);
+                buttonSounds.soundRelease = json.readValue("soundRelease", String.class, (String) null, jsonData);
+                buttonSounds.soundOver = json.readValue("soundOver", String.class, (String) null, jsonData);
+                return buttonSounds;
+            }
+        });
 
         for (ObjectMap.Entry<String, Class> entry : jsonClassTags)
             json.addClassTag(entry.key, entry.value);

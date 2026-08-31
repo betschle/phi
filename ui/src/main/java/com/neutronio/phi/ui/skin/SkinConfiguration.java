@@ -20,7 +20,7 @@ public class SkinConfiguration {
     /** the base directory of the skin. This is where all of its files are expected */
     public String baseDirectory = "skins/astrax-core-ui/";
     /** The file name for sounds stored in json */
-    public String soundsFile = "sounds.json";
+    public String soundsFile = "sounds.json"; // TODO why not saving sounds directly to the skin?
     /** The file name for the libgdx skin style file */
     public String stylesJsonFile = "styles.json";
     /** The file name for the atlas belonging to the libgdx skin */
