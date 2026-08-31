@@ -17,7 +17,7 @@ import com.neutronio.phi.ui.skin.SkinConfiguration;
 import java.util.Map;
 
 /**
- * An aoolication scoped factory for more complex AstraX Components.
+ * An application scoped factory for more complex AstraX Components.
  *
  */
 public class ComponentFactory

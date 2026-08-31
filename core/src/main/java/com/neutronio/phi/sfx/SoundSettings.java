@@ -23,40 +23,43 @@ public class SoundSettings {
             this.identifier = identifier;
             this.path = path;
         }
-
-        public String getIdentifier() {
-            return identifier;
-        }
-
-        public String getPath() {
-            return path;
-        }
     }
 
     /**
      * Sound groups to load
      */
-    private Map<String, List<SoundToLoad>> soundsToLoad = new HashMap<>();
+    private Map<String, List<SoundToLoad>> soundGroups = new HashMap<>();
 
+    /**
+     * Gets all sounds inside of a sound group or category
+     * @param category
+     * @return
+     */
     public List<SoundToLoad> getSoundsToLoad(String category) {
-        return soundsToLoad.get(category);
+        return this.soundGroups.get(category);
     }
 
     /**
-     *
-     * @param category sfx or ui, which go with its own soundmanager
+     * Sets the sounds for a category, overwrites existing value for category
+     * @param category the category or group to use, e.g.  sfx or ui
      * @param soundsToLoad
      */
     public void addSoundsToLoad(String category, List<SoundToLoad> soundsToLoad) {
-        this.soundsToLoad.put(category, soundsToLoad);
+        this.soundGroups.put(category, soundsToLoad);
     }
 
-    public void addSoundsToLoad(String category, String identifier, String path) {
-        List<SoundToLoad> soundToLoad = this.soundsToLoad.get(category);
+    /**
+     * Adds a sound to load
+     * @param category the category or group to use, e.g.  sfx or ui
+     * @param identifier the identifier by which the sound is accessed to
+     * @param filename the file name
+     */
+    public void addSoundsToLoad(String category, String identifier, String filename) {
+        List<SoundToLoad> soundToLoad = this.soundGroups.get(category);
         if ( soundToLoad == null) {
             soundToLoad = new ArrayList<>();
-            this.soundsToLoad.put(category, soundToLoad);
+            this.soundGroups.put(category, soundToLoad);
         }
-        soundToLoad.add(new SoundToLoad(identifier, path));
+        soundToLoad.add(new SoundToLoad(identifier, filename));
     }
 }

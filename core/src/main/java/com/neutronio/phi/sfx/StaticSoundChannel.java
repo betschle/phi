@@ -91,6 +91,11 @@ public class StaticSoundChannel extends SoundChannel<StaticSoundChannel.StaticSo
         this.playSoundOnce(id, 1f);
     }
 
+    /**
+     * Plays a sound once with adjusted volume
+     * @param id the id of the sound to play
+     * @param mult the factor to multiply volume
+     */
     public void playSoundOnce(String id, float mult) {
         Sound sound = this.soundContainer.getSound(id);
         if( sound != null) {

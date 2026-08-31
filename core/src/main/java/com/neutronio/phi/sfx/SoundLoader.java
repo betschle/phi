@@ -16,7 +16,8 @@ public class SoundLoader {
     private Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
 
     /**
-     * Loads sounds into the specified sound channel
+     * Loads sounds into the specified sound channel. Only loads the sounds into the channel where
+     * channel.name == sound category.
      * @param channel
      * @param directory
      * @param settings
@@ -26,8 +27,8 @@ public class SoundLoader {
         if(soundsToLoad.isEmpty())
             logger.log(Level.WARNING, "No sounds found to load for sound group '%s'", channel.getName());
         for(SoundSettings.SoundToLoad sound : soundsToLoad) {
-            logger.log(Level.INFO, sound.getIdentifier() + " @ " + sound.getPath());
-            channel.getSounds().addSound(sound.getIdentifier(), Gdx.audio.newSound(Gdx.files.local(directory + sound.getPath())));
+            logger.log(Level.INFO, sound.identifier + " @ " + sound.path);
+            channel.getSounds().addSound(sound.identifier, Gdx.audio.newSound(Gdx.files.local(directory + sound.path)));
         }
     }
 
