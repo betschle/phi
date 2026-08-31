@@ -9,22 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Plays sound according to distance and location in a scene.
+ * A sound channel for spatial sounds, that change panning depending on
+ * relative position to the observer camera. To control played instances, create
+ * and use a SpatialSoundInstance.
  */
-public class SpatialSoundManager extends SoundManager {
-    // TODO SpatialSoundManager and SoundManager need a common interface here to be able to load sounds!!!
-    //  I dont think SpatialSoundManager requires any of the regular SoundManager functionality.
-    //  There are two flavors of similar functionality and the same structural pattern here that also
-    //  require the same classes (SoundManager - logic, SoundInstance - logic helper class, SoundToLoad - class for loading)
-
+public class SpatialSoundChannel extends SoundChannel<SpatialSoundChannel.SpatialSoundInstance> {
     /** The maximum distance at which sounds are being played */
     private float maxDistance = 5000f;
-
     private OrthographicCamera camera;
-    private List<LoopedSpatialSound> spatialSounds = new ArrayList<>();
+    /** The sounds currently being updated and played */
+    private List<SpatialSoundInstance> spatialSounds = new ArrayList<>();
 
-    public class LoopedSpatialSound {
-        protected SoundInstance soundInstance;
+    public class SpatialSoundInstance implements SoundInstance {
+
+        protected StaticSoundChannel.StaticSoundInstance staticSoundInstance;
         /** The calculated distance to the camera*/
         protected float distance;
 
@@ -42,11 +40,10 @@ public class SpatialSoundManager extends SoundManager {
          * @param id
          */
         public void init(String id) {
-            if( soundInstance != null) return;
-            Sound sound = sounds.get(id);
+            if( staticSoundInstance != null) return;
+            Sound sound = soundContainer.getSound(id);
             if( sound != null ) {
-                soundInstance = new SoundInstance(-1, sound);
-                usageChecker.record(id);
+                staticSoundInstance = new StaticSoundChannel.StaticSoundInstance(-1, sound);
             } else {
                 logger.severe("Sound of ID '" + id + "' not found!");
             }
@@ -56,31 +53,31 @@ public class SpatialSoundManager extends SoundManager {
          * Loops this spatial sound.
          */
         public void loop() {
-            if( soundInstance == null) return;
-            soundInstance.loop(volume * this.volumeMultiplier);
+            if( staticSoundInstance == null) return;
+            staticSoundInstance.loop(volume * this.volumeMultiplier);
         }
 
         /**
          * Plays this spatial sound once.
          */
         public void play() {
-            if( soundInstance == null) return;
-            soundInstance.play(volume * this.volumeMultiplier);
+            if( staticSoundInstance == null) return;
+            staticSoundInstance.play(volume * this.volumeMultiplier);
         }
 
         public void pause() {
-            if( soundInstance == null) return;
-            soundInstance.pause();
+            if( staticSoundInstance == null) return;
+            staticSoundInstance.pause();
         }
 
         public void resume() {
-            if( soundInstance == null) return;
-            soundInstance.resume();
+            if( staticSoundInstance == null) return;
+            staticSoundInstance.resume();
         }
 
         public void stop() {
-            if( soundInstance == null) return;
-            soundInstance.stop();
+            if( staticSoundInstance == null) return;
+            staticSoundInstance.stop();
         }
 
         public void setPitch(float pitch) {
@@ -122,17 +119,33 @@ public class SpatialSoundManager extends SoundManager {
             this.distance = Vector2.dst(camera.position.x, camera.position.y,
                 globalX,globalY);
             this.panning = -1 * MathUtils.clamp( (camera.position.x - globalX) / camera.viewportWidth, -1f, 1f);
+            // TODO current sound volume must still be clamped to max volume
             this.volume = MathUtils.clamp(1 - (distance / maxDistance), 0f, 1f);
 
-            this.soundInstance.sound.setPan(this.soundInstance.id, this.panning, MathUtils.clamp( this.volume*this.volumeMultiplier, 0f, maxVolume) );
-            this.soundInstance.sound.setPitch(this.soundInstance.id, this.pitch);
+            this.staticSoundInstance.sound.setPan(this.staticSoundInstance.id, this.panning, MathUtils.clamp( this.volume*this.volumeMultiplier, 0f, maxVolume) );
+            this.staticSoundInstance.sound.setPitch(this.staticSoundInstance.id, this.pitch);
         }
     }
 
-    public SpatialSoundManager(String name) {
+    /**
+     * @param name name of the sound channel, e.g. use "ui" or "sfx" etc.
+     */
+    public SpatialSoundChannel(String name) {
         super(name);
     }
 
+    @Override
+    public void updateVolume() {
+        // TODO current sound volume must still be clamped to max volume
+//        for(SpatialSoundInstance sound : soundInstances) {
+//            sound.staticSoundInstance.sound.setVolume(sounds.id, this.maxVolume);
+//        }
+    }
+
+    /**
+     * Sets the camera that acts as audio listener
+     * @param camera
+     */
     public void setCamera(OrthographicCamera camera) {
         this.camera = camera;
     }
@@ -143,19 +156,19 @@ public class SpatialSoundManager extends SoundManager {
      * @param soundId
      * @return null if the camera was not set yet
      */
-    public LoopedSpatialSound createSpatialSound(String soundId) {
+    public SpatialSoundInstance createSpatialSound(String soundId) {
         if( this.camera == null) return null;
-        LoopedSpatialSound spatialSound = new LoopedSpatialSound();
+        SpatialSoundInstance spatialSound = new SpatialSoundInstance();
         spatialSound.init(soundId);
         this.spatialSounds.add(spatialSound);
-        return  spatialSound;
+        return spatialSound;
     }
 
     /**
      * Resumes all registered spatial sounds.
      */
     public void resumeSpatialSounds() {
-        for( LoopedSpatialSound sound : this.spatialSounds) {
+        for(SpatialSoundInstance sound : this.spatialSounds) {
             sound.resume();
         }
     }
@@ -164,16 +177,8 @@ public class SpatialSoundManager extends SoundManager {
      * Pauses all registered spatial sounds.
      */
     public void pauseSpatialSounds() {
-        for( LoopedSpatialSound sound : this.spatialSounds) {
+        for(SpatialSoundInstance sound : this.spatialSounds) {
             sound.pause();
         }
-    }
-
-    /**
-     * Removes a spatial sound from this manager, e.g. when the sound carrier is being destroyed.
-     * @param spatialSound
-     */
-    public void removeSpatialSound(LoopedSpatialSound spatialSound) {
-        this.sounds.remove(spatialSound);
     }
 }

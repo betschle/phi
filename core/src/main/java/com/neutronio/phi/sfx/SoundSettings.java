@@ -16,8 +16,8 @@ public class SoundSettings {
      * it can be played and referenced.
      */
     public static class SoundToLoad {
-        String identifier;
-        String path;
+        public String identifier;
+        public String path;
 
         public SoundToLoad( String identifier, String path) {
             this.identifier = identifier;

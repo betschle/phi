@@ -3,7 +3,7 @@ package com.neutronio.phi.sfx;
 /**
  * A shuffled sound. There is one base ID for one sound and
  * the different-sounding instances of this sound are numbered.
- * In the {@link SoundManager} one sound is picked randomly to play.
+ * In the {@link SoundChannel} one sound is picked randomly to play.
  */
 public class ShuffleSound {
 
