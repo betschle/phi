@@ -19,12 +19,32 @@ import java.util.Map;
 public class EnumTranslations {
     private Map<Enum, EnumTranslation> enumTranslations = new LinkedHashMap<>();
 
+    /*
+       AstraX Enums that need translation:
+            - DiscoveredStatus ?
+            - Discovery.Rarity : name
+            - FunctionalSystem.SystemHealth - future : name
+            - GalaxyClass (Ellipse, Spiral...) : name, description
+            - GameDifficulty : name, description
+            - Message.MessageType : message
+            - Module.ModuleStatus - future : name
+            - ModuleFunctionType - for sorting : name
+            - Orientation : name
+            - PlanetClass duplicate of PlanetType ? : name
+            - PlanetType duplicate of PlanetClass ? : name
+            - PropulsionSystem.ThrusterType ? : name
+            - SatelliteRole - future : name, description
+            - Targetable.Type : name, description
+            - TraitType ? : name, description
+            - VesselSize : name, description
+            -
+     */
     /** Maps enums to translation identifiers */
     public class EnumTranslation {
         /** The translated display name of this enum. */
-        String nameTranslation;
+        public String nameTranslation;
         /** An optional translation for the enum description. Can be null */
-        String descriptionTranslation;
+        public String descriptionTranslation;
 
         public EnumTranslation(String nameTranslation, String descriptionTranslation) {
             this.nameTranslation = nameTranslation;
@@ -119,7 +139,7 @@ public class EnumTranslations {
 
     public static void main(String[] args) {
         EnumTranslations translations = new EnumTranslations();
-        translations.setTranslationsAsName(FileHandler.State.values());
+        translations.setTranslationsAsName(FileHandler.FileOperationStatus.values());
         translations.setTranslationsAsNameAndDescription(Message.MessageType.values());
         EnumTranslation translation = translations.getTranslation(Message.MessageType.ALERT);
     }
