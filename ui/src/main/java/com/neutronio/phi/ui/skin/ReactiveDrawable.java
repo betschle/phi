@@ -26,7 +26,7 @@ public class ReactiveDrawable {
         return copy;
     }
 
-    protected Drawable getDrawable(Button button) {
+    public Drawable getDrawable(Button button) {
         if (button.isDisabled() && disabledRegion != null) return disabledRegion;
         if (button.isPressed()) {
             if (button.isChecked() && checkedRegion != null) return checkedRegion;
