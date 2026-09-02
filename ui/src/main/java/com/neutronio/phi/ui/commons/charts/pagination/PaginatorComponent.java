@@ -1,4 +1,4 @@
-package com.neutronio.phi.ui.commons.widgets;
+package com.neutronio.phi.ui.commons.charts.pagination;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.neutronio.phi.ui.ComponentFactory;
 import com.neutronio.phi.ui.commons.AstraXComponent;
-import com.neutronio.phi.ui.commons.Paginator;
 import com.neutronio.phi.ui.commons.buttons.AstraXButton;
 import com.neutronio.phi.ui.commons.text.TextSelector;
 
@@ -18,7 +17,7 @@ import com.neutronio.phi.ui.commons.text.TextSelector;
  */
 public class PaginatorComponent
         extends
-            AstraXComponent {
+            AstraXComponent { // Rename to NumberPaginator?
 
     // TODO style?
     private Paginator paginator;

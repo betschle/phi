@@ -1,4 +1,4 @@
-package com.neutronio.phi.ui.commons;
+package com.neutronio.phi.ui.commons.charts.pagination;
 
 /**
  * An interface for components that use pagination. To be used together

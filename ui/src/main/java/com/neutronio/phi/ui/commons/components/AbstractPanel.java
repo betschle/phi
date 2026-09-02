@@ -1,10 +1,12 @@
-package com.neutronio.phi.ui.commons;
+package com.neutronio.phi.ui.commons.components;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.AstraXComponent;
+import com.neutronio.phi.ui.commons.Background;
 import com.neutronio.phi.ui.commons.text.AstraXLabel;
 
 /**
@@ -13,7 +15,7 @@ import com.neutronio.phi.ui.commons.text.AstraXLabel;
  */
 public abstract class AbstractPanel
         extends
-            AstraXComponent
+    AstraXComponent
 {
 
     protected AbstractPanelStyle panelStyle;

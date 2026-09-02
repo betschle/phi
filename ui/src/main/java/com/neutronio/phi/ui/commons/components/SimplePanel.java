@@ -1,6 +1,7 @@
-package com.neutronio.phi.ui.commons;
+package com.neutronio.phi.ui.commons.components;
 
 import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.components.AbstractPanel;
 
 public class SimplePanel extends AbstractPanel {
 

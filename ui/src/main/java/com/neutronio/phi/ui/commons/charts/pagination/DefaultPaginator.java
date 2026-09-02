@@ -1,7 +1,10 @@
-package com.neutronio.phi.ui.commons;
+package com.neutronio.phi.ui.commons.charts.pagination;
 
 import com.badlogic.gdx.math.MathUtils;
 
+/**
+ * A logical controller for pagination
+ */
 public class DefaultPaginator implements Paginator {
 
     private int currentPage = 1;
