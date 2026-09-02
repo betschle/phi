@@ -1,13 +1,11 @@
 package com.neutronio.phi.ui.commons.buttons;
 
 import com.badlogic.gdx.utils.Null;
-import com.neutronio.astrax.util.Phi;
 
 /**
  * Single Button Selection. Only allows for one button to be checked at a time.
  * @param <T>
  */
-@Phi(Phi.PENDING)
 public class SoloButtonSelection<T extends Button> extends AbstractButtonSelection<T> {
 
     // TODO add noSelection: if false, always have one item selected

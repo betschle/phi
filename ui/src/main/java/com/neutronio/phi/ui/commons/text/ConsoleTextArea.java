@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Clipboard;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.AstraXComponent;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.AstraXComponent;
 
 import java.util.ArrayList;
 import java.util.List;

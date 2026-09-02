@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.neutronio.astrax.AstraXApp;
-import com.neutronio.astrax.ui.commons.tooltips.ToolTipListener;
-import com.neutronio.astrax.ui.commons.tooltips.ToolTipManager;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.tooltips.ToolTipListener;
+import com.neutronio.phi.ui.tooltips.ToolTipManager;
 
 /**
  * A simple static icon. Loosely based off {@link AstraXButton}
@@ -42,11 +42,11 @@ public class StaticIcon extends Group {
 
     }
 
-    public StaticIcon(Skin skin, String baseStyle) {
-        this(skin, skin.get(baseStyle, StaticIconStyle.class));
+    public StaticIcon(ComponentFactory componentFactory, String baseStyle) {
+        this(componentFactory, componentFactory.getSkin().get(baseStyle, StaticIconStyle.class));
     }
 
-    public StaticIcon(Skin skin, StaticIconStyle style) {
+    public StaticIcon(ComponentFactory componentFactory, StaticIconStyle style) {
         this.skin = skin;
         this.baseImage = new Image();
         this.addActor(this.baseImage);
@@ -54,35 +54,10 @@ public class StaticIcon extends Group {
         this.iconImage = new Image();
         this.addActor(this.iconImage);
         this.setStyle( style);
-        this.toolTipListener = AstraXApp.astraX.getComponentFactory().getToolTipManager();
+        this.toolTipListener = componentFactory.getToolTipManager();
 
         // for now added to the icon but must be added to the whole component
         // for that size must be set properly. a problem for later
-        this.iconImage.addListener(new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                if(toolTipListener != null && toolTipInfo != null) toolTipListener.onEnterTooltip(toolTipInfo, x, y, baseImage.getParent());
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                if(toolTipListener != null && toolTipInfo != null) toolTipListener.onExitTooltip(toolTipInfo, x, y, baseImage.getParent());
-            }
-        });
-    }
-
-    @Deprecated
-    public StaticIcon(StaticIconStyle style) {
-        this.baseImage = new Image();
-        this.addActor(this.baseImage);
-
-        this.iconImage = new Image();
-        this.addActor(this.iconImage);
-        this.setStyle( style );
-        this.toolTipListener = AstraXApp.astraX.getComponentFactory().getToolTipManager();
-
         this.iconImage.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {

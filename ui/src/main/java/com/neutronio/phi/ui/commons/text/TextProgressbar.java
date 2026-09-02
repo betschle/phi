@@ -4,15 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.utils.Align;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.ProgressBar;
-import com.neutronio.astrax.util.Phi;
-import com.neutronio.astrax.util.StandardFormats;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.components.ProgressBar;
+import com.neutronio.phi.util.format.StandardFormats;
 
 /**
  * A Text Progressbar that displays its value, formatted, on the bar.
  */
-@Phi(Phi.PENDING)
 public class TextProgressbar extends Stack {
     // TODO add styling to this component
     public static class Style {

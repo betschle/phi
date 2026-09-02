@@ -13,6 +13,7 @@ import com.neutronio.phi.lang.I18n;
 import com.neutronio.phi.sfx.StaticSoundChannel;
 import com.neutronio.phi.ui.skin.PhiSkin;
 import com.neutronio.phi.ui.skin.SkinConfiguration;
+import com.neutronio.phi.ui.tooltips.ToolTipManager;
 
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class ComponentFactory
     private float defaultTabWidth = 1200f;
     private float defaultTabHeight = 600;
 
-//    private ToolTipManager toolTipManager;
+    private ToolTipManager toolTipManager;
 
     public static EnumTranslations getDefaultEnumTranslations() {
         EnumTranslations enumTranslations = new EnumTranslations();
@@ -75,9 +76,9 @@ public class ComponentFactory
 //        this.toolTipManager = new ToolTipManager(this);
     }
 
-//    public ToolTipManager getToolTipManager() {
-//        return toolTipManager;
-//    }
+    public ToolTipManager getToolTipManager() {
+        return toolTipManager;
+    }
 
     /**
      * Loads the default UI skin into the component factory

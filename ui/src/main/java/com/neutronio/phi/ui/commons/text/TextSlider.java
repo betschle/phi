@@ -6,15 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.widgets.AstraXSlider;
-import com.neutronio.astrax.util.Phi;
-import com.neutronio.astrax.util.StandardFormats;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.components.AstraXSlider;
+import com.neutronio.phi.util.format.StandardFormats;
 
 /**
  * A horizontal slider with a label
  */
-@Phi(Phi.PENDING)
 public class TextSlider extends Table {
 
 

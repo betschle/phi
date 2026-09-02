@@ -11,7 +11,7 @@ import com.neutronio.phi.sfx.ButtonSounds;
 import com.neutronio.phi.ui.ComponentFactory;
 import com.neutronio.phi.ui.CustomAction;
 import com.neutronio.phi.ui.Tweening;
-import com.neutronio.phi.ui.commons.SimplePanel;
+import com.neutronio.phi.ui.commons.components.SimplePanel;
 import com.neutronio.phi.ui.tooltips.ToolTipListener;
 import com.neutronio.phi.ui.tooltips.ToolTipManager;
 

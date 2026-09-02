@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.neutronio.astrax.ui.ComponentFactory;
+import com.neutronio.phi.ui.ComponentFactory;
 
 import java.util.HashMap;
 import java.util.Map;
