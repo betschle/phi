@@ -6,15 +6,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.neutronio.phi.app.Message;
 import com.neutronio.phi.io.FileHandler;
 import com.neutronio.phi.lang.EnumTranslations;
 import com.neutronio.phi.lang.I18n;
 import com.neutronio.phi.sfx.StaticSoundChannel;
+import com.neutronio.phi.ui.commons.text.AstraXLabel;
+import com.neutronio.phi.ui.skin.BundleNotFoundException;
 import com.neutronio.phi.ui.skin.PhiSkin;
 import com.neutronio.phi.ui.skin.SkinConfiguration;
 import com.neutronio.phi.ui.tooltips.ToolTipManager;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -44,6 +48,8 @@ public class ComponentFactory
     private PhiSkin skin;
     /** for playing UI sounds */
     private StaticSoundChannel soundChannel;
+    /** The name of the main translation bundle */
+    private String coreTranslationBundle = "phi";
     /** Core translations for the AstraX GUI */
     private I18n coreTranslations;
     /** Helper object for enum-centered translations */
@@ -115,13 +121,24 @@ public class ComponentFactory
     }
 
     /**
+     *
+     * @param bundleName the name of the bundle, e.g. phi. Name is used to access the bundle file and the bundle itself later
+     * @param language the language of bundle
+     * @param path the path to bundle
+     * @param location the bundle location
+     */
+    public void loadTranslations(String bundleName, Locale language, String path, FileHandler.FileLocation location) {
+        I18n translations = new I18n(language);
+        translations.loadBundles(path, location, bundleName);
+        this.translations.put(bundleName, translations);
+    }
+    /**
      * Loads the translations into the component factory
      */
     public void loadTranslations(SkinConfiguration skinSettings) {
-        // Note: some resource bundles are data related and need to be located inside the mod
-        // TODO duplicate code with DataManager here
+        // TODO replace this method with above one
         this.coreTranslations = new I18n(skinSettings.language);
-        this.coreTranslations.loadBundles(skinSettings.translationsPath,skinSettings.skinLocation, skinSettings.translationsBundleName);
+        this.coreTranslations.loadBundles(skinSettings.translationsPath, skinSettings.skinLocation, skinSettings.translationsBundleName);
     }
 
     /**
@@ -132,36 +149,6 @@ public class ComponentFactory
         return skin;
     }
 
-    public ImageTextButton.ImageTextButtonStyle copy(ImageTextButton.ImageTextButtonStyle buttonStyle) {
-        // TODO OMG use reflection for copying instead holy shit
-        ImageTextButton.ImageTextButtonStyle buttonStyleCopy = new ImageTextButton.ImageTextButtonStyle();
-        buttonStyleCopy.imageUp = buttonStyle.imageUp;
-        buttonStyleCopy.imageDown = buttonStyle.imageDown;
-        buttonStyleCopy.imageOver = buttonStyle.imageOver;
-        buttonStyleCopy.imageChecked = buttonStyle.imageChecked;
-        buttonStyleCopy.imageCheckedDown = buttonStyle.imageCheckedDown;
-        buttonStyleCopy.imageCheckedOver = buttonStyle.imageCheckedOver;
-        buttonStyleCopy.imageDisabled = buttonStyle.imageDisabled;
-
-        buttonStyleCopy.font = buttonStyle.font;
-        buttonStyleCopy.fontColor = buttonStyle.fontColor;
-        buttonStyleCopy.downFontColor = buttonStyle.downFontColor;
-        buttonStyleCopy.overFontColor = buttonStyle.overFontColor;
-        buttonStyleCopy.disabledFontColor = buttonStyle.disabledFontColor;
-        buttonStyleCopy.checkedFontColor = buttonStyle.checkedFontColor;
-        buttonStyleCopy.checkedDownFontColor = buttonStyle.checkedDownFontColor;
-        buttonStyleCopy.checkedOverFontColor = buttonStyle.checkedOverFontColor;
-        buttonStyleCopy.checkedFocusedFontColor = buttonStyle.checkedFocusedFontColor;
-
-        buttonStyleCopy.up = buttonStyle.up;
-        buttonStyleCopy.down = buttonStyle.down;
-        buttonStyleCopy.over = buttonStyle.over;
-        buttonStyleCopy.checked = buttonStyle.checked;
-        buttonStyleCopy.checkedDown = buttonStyle.checkedDown;
-        buttonStyleCopy.focused = buttonStyle.focused;
-        return buttonStyleCopy;
-    }
-
     // TODO duplicate with DataManager
     /**
      * Gets the translation for a given key using the astrax-core translations
@@ -169,7 +156,41 @@ public class ComponentFactory
      * @return
      */
     public String translate(String identifier) {
-        return this.coreTranslations.translate(identifier);
+        return this.translate(this.coreTranslationBundle, identifier);
+    }
+
+    /**
+     * Gets the translation for a given key using the given translation bundle
+     * @param bundleName the bundle to use
+     * @param identifier a translation identifier
+     * @return
+     */
+    public String translate(String bundleName, String identifier) {
+        I18n i18n = this.translations.get(bundleName);
+        if(i18n == null) throw new BundleNotFoundException(bundleName);
+        return i18n.translate(identifier);
+    }
+
+    /**
+     * Translates, then formats String with provided parameters, using the astrax-core translations
+     * @param identifier a translation identifier
+     * @param params parameters to format the translation identifier with
+     * @return
+     */
+    public String translate(String identifier, Object... params) {
+        return this.translate(this.coreTranslationBundle, identifier, params);
+    }
+
+    /**
+     * Translates, then formats String with provided parameters, using the astrax-core translations
+     * @param identifier a translation identifier
+     * @param params parameters to format the translation identifier with
+     * @return
+     */
+    public String translate(String bundleName, String identifier, Object... params) {
+        I18n i18n = this.translations.get(bundleName);
+        if(i18n == null) throw new BundleNotFoundException(bundleName);
+        return i18n.translate(identifier, params);
     }
 
     /**
@@ -210,14 +231,11 @@ public class ComponentFactory
         return key;
     }
 
-    /**
-     * Translates, then formats String with provided parameters, using the astrax-core translations
-     * @param identifier a translation identifier
-     * @param params parameters to format the translation identifier with
-     * @return
-     */
-    public String translate(String identifier, Object... params) {
-        return this.coreTranslations.translate(identifier, params);
+    public Tooltip<AstraXLabel> getToolTip(String text) {
+        AstraXLabel label = new AstraXLabel(this, text, "default", "border");
+        Tooltip<AstraXLabel> tooltip = new Tooltip<>(label);
+        tooltip.setInstant(true);
+        return tooltip;
     }
 
     public void playUISound(String soundID) {

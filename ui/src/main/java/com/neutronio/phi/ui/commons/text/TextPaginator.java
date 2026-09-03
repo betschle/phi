@@ -2,8 +2,8 @@ package com.neutronio.phi.ui.commons.text;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.neutronio.phi.ui.commons.charts.pagination.DefaultPaginator;
-import com.neutronio.phi.ui.commons.charts.pagination.PaginatorComponent;
+import com.neutronio.phi.ui.commons.pagination.DefaultPaginator;
+import com.neutronio.phi.ui.commons.pagination.PaginatorComponent;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.neutronio.phi.ui.tooltips;
 
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.text.AstraXLabel;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.text.AstraXLabel;
 
 public class HelpTooltip extends AstraXLabel
         implements ToolTipComponent<String>{

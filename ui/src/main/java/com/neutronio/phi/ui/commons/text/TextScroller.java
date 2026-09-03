@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.buttons.ReactiveColor;
-import com.neutronio.astrax.ui.commons.panels.AbstractPanel;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.components.AbstractPanel;
+import com.neutronio.phi.ui.skin.ReactiveColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class TextScroller extends AbstractPanel {
         public BitmapFont font;
         public ReactiveColor fontColor;
     }
+
     private BitmapFont font;
     /** The content text rows, contentText.len > displayText.len */
     private List<String> contentText = new ArrayList<>();

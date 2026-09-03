@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Pools;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.AstraXComponent;
-import com.neutronio.astrax.ui.commons.buttons.AstraXButton;
-import com.neutronio.astrax.ui.commons.widgets.SelectBoxWrapper;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.AstraXComponent;
+import com.neutronio.phi.ui.commons.SelectBoxWrapper;
+import com.neutronio.phi.ui.commons.buttons.AstraXButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public class TextSelector<W>
         extends
-        AstraXComponent {
+            AstraXComponent {
 
     // TODO add styling to this component
     private static String pleaseSelect = "[Select One...]";

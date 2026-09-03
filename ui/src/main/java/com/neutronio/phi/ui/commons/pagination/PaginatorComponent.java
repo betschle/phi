@@ -1,4 +1,4 @@
-package com.neutronio.phi.ui.commons.charts.pagination;
+package com.neutronio.phi.ui.commons.pagination;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

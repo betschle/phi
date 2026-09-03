@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.neutronio.astrax.ui.ComponentFactory;
-import com.neutronio.astrax.ui.commons.AstraXComponent;
+import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.commons.AstraXComponent;
 
 /**
  * A component that lists multiple entries where one entry can reveal more details.
@@ -61,7 +61,7 @@ public class Wiki
                 onSelectedChanged();
             }
         });
-        this.entries.addListener( componentFactory.getButtonSoundListener("checkBox"));
+//        this.entries.addListener( componentFactory.getButtonSoundListener("checkBox"));
         this.entryScrollPane = new ScrollPane(this.entries, getSkin(), "default-vertical");
         this.entryScrollPane.setFadeScrollBars(false);
         this.entryScrollPane.pack();
