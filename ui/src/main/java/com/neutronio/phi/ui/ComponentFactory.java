@@ -138,13 +138,12 @@ public class ComponentFactory
         translations.loadBundles(this.fileHandler, path, location, bundleName);
         this.translations.put(bundleName, translations);
     }
+
     /**
-     * Loads the translations into the component factory
+     * Loads the default translations into the component factory
      */
     public void loadTranslations(SkinConfiguration skinSettings) {
-        // TODO replace this method with above one
-        this.coreTranslations = new I18n(skinSettings.language);
-        this.coreTranslations.loadBundles(this.fileHandler, skinSettings.translationsPath, skinSettings.skinLocation, skinSettings.translationsBundleName);
+        this.loadTranslations(skinSettings.translationsBundleName, skinSettings.language, skinSettings.translationsPath, skinSettings.skinLocation);
     }
 
     /**

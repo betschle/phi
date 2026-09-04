@@ -83,18 +83,31 @@ public class FlexTab
         return stackController;
     }
 
+    /**
+     * Shows a tab by its index and properly selects its tab button as well
+     * @param index
+     */
     public void showTab(int index) {
         this.stackController.show(index);
         if(index < 0) return;
         this.tabButtonGroup.updateCheckedState(this.tabButtons.get(index), true);
     }
 
+    /**
+     * Shows a tab by its actor and properly selects its tab button as well
+     * @param ofActor
+     */
     public void showTab(Actor ofActor) {
         int index = this.stackController.show(ofActor);
         if(index < 0) return;
         this.tabButtonGroup.updateCheckedState(this.tabButtons.get(index), true);
     }
 
+    /**
+     * Shows a tab by its class and properly selects its tab button as well
+     * @param byClass the class of contents, only works for different content classes. If
+     *                many content actors have the same class, the first entry will be shown
+     */
     public void showTab(Class byClass) {
         int index = this.stackController.show(byClass);
         if(index < 0) return;
