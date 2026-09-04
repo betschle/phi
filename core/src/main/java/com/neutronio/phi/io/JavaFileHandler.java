@@ -1,5 +1,6 @@
 package com.neutronio.phi.io;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.neutronio.phi.app.Message;
 
@@ -10,6 +11,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PropertyResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A FileHandler in plain old java, without gdx framework dependencies.
@@ -20,6 +24,8 @@ public class JavaFileHandler implements FileHandler {
     // TODO write automated tests!
     // TODO This filehandler does not wark in conjunction with astrax blueprint loader
     // TODO confirm this handler works in packaged state as well (internal and external resources need to be able to be referenced)
+    private Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
+
     @Override
     public boolean deleteFile(GDXFileHandler.PhiFile file) {
         return file.file.delete();
@@ -121,5 +127,26 @@ public class JavaFileHandler implements FileHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public PropertyResourceBundle loadBundle(String path, FileLocation location) {
+        PropertyResourceBundle bundle = null;
+        InputStream inputStream = null;
+        try {
+            logger.log(Level.INFO, "Loading resource bundle: {0} ", new Object[]{path});
+            inputStream = new FileInputStream(path);
+            bundle = new PropertyResourceBundle(inputStream);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if( inputStream != null) inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bundle;
     }
 }

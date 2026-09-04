@@ -1,12 +1,12 @@
 package com.neutronio.phi.io;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.neutronio.phi.app.Message;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.PropertyResourceBundle;
 
 /**
  * An interface for low-level file handling. Reads and saves contents to a file. Allows for
@@ -115,4 +115,12 @@ public interface FileHandler {
      * @return a status. SAVED if successful, ABORTED if file already exists.
      */
     FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) throws IOException;
+
+    /**
+     * Loads a property resource bundle
+     * @param path
+     * @param location
+     * @return
+     */
+    PropertyResourceBundle loadBundle(String path, FileLocation location);
 }

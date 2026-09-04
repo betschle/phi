@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PropertyResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -193,6 +195,28 @@ public class GDXFileHandler implements FileHandler {
     @Override
     public <T extends Serializable> T readFileBinary(String path, FileLocation location) {
         throw new UnsupportedOperationException("Not supported yet!");
+    }
+
+    @Override
+    public PropertyResourceBundle loadBundle(String path, FileLocation location) {
+        PropertyResourceBundle bundle = null;
+        FileHandle fileHandle = GDXFileHandler.toGdxFileHandle(path, location);
+        InputStream inputStream = null;
+        try {
+            logger.log(Level.INFO, "Loading resource bundle: {0} ", new Object[]{path});
+            inputStream = fileHandle.read();
+            bundle = new PropertyResourceBundle(inputStream);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if( inputStream != null) inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bundle;
     }
 
     private void save(File file, String data) throws IOException {

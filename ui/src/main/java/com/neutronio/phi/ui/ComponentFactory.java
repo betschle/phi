@@ -46,6 +46,8 @@ public class ComponentFactory
 
     /** The skin used for the UI */
     private PhiSkin skin;
+    /** For IO operations */
+    private FileHandler fileHandler;
     /** for playing UI sounds */
     private StaticSoundChannel soundChannel;
     /** The name of the main translation bundle */
@@ -80,6 +82,10 @@ public class ComponentFactory
         // TODO Use SoundGroups on top of JSON Sound loading
         // TODO I could add this to styles!
 //        this.toolTipManager = new ToolTipManager(this);
+    }
+
+    public void setFileHandler(FileHandler fileHandler) {
+        this.fileHandler = fileHandler;
     }
 
     public ToolTipManager getToolTipManager() {
@@ -129,7 +135,7 @@ public class ComponentFactory
      */
     public void loadTranslations(String bundleName, Locale language, String path, FileHandler.FileLocation location) {
         I18n translations = new I18n(language);
-        translations.loadBundles(path, location, bundleName);
+        translations.loadBundles(this.fileHandler, path, location, bundleName);
         this.translations.put(bundleName, translations);
     }
     /**
@@ -138,7 +144,7 @@ public class ComponentFactory
     public void loadTranslations(SkinConfiguration skinSettings) {
         // TODO replace this method with above one
         this.coreTranslations = new I18n(skinSettings.language);
-        this.coreTranslations.loadBundles(skinSettings.translationsPath, skinSettings.skinLocation, skinSettings.translationsBundleName);
+        this.coreTranslations.loadBundles(this.fileHandler, skinSettings.translationsPath, skinSettings.skinLocation, skinSettings.translationsBundleName);
     }
 
     /**

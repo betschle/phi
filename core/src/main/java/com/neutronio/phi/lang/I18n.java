@@ -1,22 +1,17 @@
 package com.neutronio.phi.lang;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.neutronio.phi.io.GDXFileHandler;
 import com.neutronio.phi.io.FileHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Stores localization resources inside a bundle. Compatible with LibGdx.
  */
 public class I18n {
-
     public static final Locale[] supportedLanguages = { Locale.ENGLISH, Locale.GERMAN };
     private Logger logger = Logger.getLogger(I18n.class.getCanonicalName());
+
     private Locale currentLocale;
 
     private Map<Locale, PropertyResourceBundle> resourceBundles = new HashMap<>();
@@ -76,36 +71,14 @@ public class I18n {
      * @param basename the resource bundle name, e.g. labels. Associated bundles will be loaded automatically according to expected locales
      * @param location the location
      */
-    public void loadBundles(String path, FileHandler.FileLocation location, String basename){
-        this.baseBundle = this.loadBundle(path + "/" + basename + ".properties", location);
-        for( Locale locale : supportedLanguages) {
-            PropertyResourceBundle bundle = this.loadBundle(path + "/" + basename + "_" + locale.getLanguage()+".properties", location);
-            if( bundle != null) {
+    public void loadBundles(FileHandler fileHandler, String path, FileHandler.FileLocation location, String basename){
+        this.baseBundle = fileHandler.loadBundle(path + "/" + basename + ".properties", location);
+        for(Locale locale : supportedLanguages) {
+            PropertyResourceBundle bundle = fileHandler.loadBundle(path + "/" + basename + "_" + locale.getLanguage()+".properties", location);
+            if(bundle != null) {
                 this.resourceBundles.put(locale, bundle);
             }
         }
-    }
-
-    private PropertyResourceBundle loadBundle(String path, FileHandler.FileLocation location) {
-        PropertyResourceBundle bundle = null;
-        FileHandle fileHandle = GDXFileHandler.toGdxFileHandle(path, location);
-        InputStream inputStream = null;
-        try {
-            logger.log(Level.INFO, "Loading resource bundle: {0} ", new Object[]{path});
-
-            inputStream = fileHandle.read();
-            bundle = new PropertyResourceBundle(inputStream);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if( inputStream != null) inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return bundle;
     }
 
     public Locale getCurrentLocale() {
