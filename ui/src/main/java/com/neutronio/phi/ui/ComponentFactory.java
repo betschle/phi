@@ -14,6 +14,7 @@ import com.neutronio.phi.lang.I18n;
 import com.neutronio.phi.sfx.StaticSoundChannel;
 import com.neutronio.phi.ui.commons.text.AstraXLabel;
 import com.neutronio.phi.ui.skin.BundleNotFoundException;
+import com.neutronio.phi.ui.skin.EnumIconMapper;
 import com.neutronio.phi.ui.skin.PhiSkin;
 import com.neutronio.phi.ui.skin.SkinConfiguration;
 import com.neutronio.phi.ui.tooltips.ToolTipManager;
@@ -56,7 +57,8 @@ public class ComponentFactory
     private I18n coreTranslations;
     /** Helper object for enum-centered translations */
     private EnumTranslations enumTranslations;
-
+    /** Helper object to map enums to icons */
+    private EnumIconMapper enumIconMapper = new EnumIconMapper();
     /** Additional GUI translations. Key is DataPack.Name  >*/
     private Map<String, I18n> translations; // TODO add me for mod support
 
@@ -86,6 +88,10 @@ public class ComponentFactory
 
     public void setFileHandler(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
+    }
+
+    public EnumIconMapper getEnumIconMapper() {
+        return enumIconMapper;
     }
 
     public ToolTipManager getToolTipManager() {
