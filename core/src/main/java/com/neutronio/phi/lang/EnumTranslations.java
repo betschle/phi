@@ -1,14 +1,14 @@
 package com.neutronio.phi.lang;
 
-import com.neutronio.phi.app.Message;
-import com.neutronio.phi.io.FileHandler;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Ensures enums can be translated, by providing an interface to save various translations for enums.
- * The translation identifiers themselves must be added to the resource bundle. Allows for enums to have
+/** <p> Helper class for translating enums. Allows for creation of identifiers and maps them to enum constants.
+ * Allows for using different suffixes.</p>
+ * <p>
+ * For an enum called FileType.INTERNAL the identifiers FileType_internal_name and FileType_internal_description can be created.
+ * </p>
+ * After creation, translation identifiers must be added to the resource bundle. Allows for enums to have
  * custom identifiers (that deviate from their class name).
  * <p>
  * This object is used to generate translation identifiers that are then used for CSV or .properties import/export.
@@ -109,7 +109,7 @@ public class EnumTranslations {
     }
 
     /**
-     * Adds a translation using the enum as identifier, appends a customizable suffix to all identifiers
+     * Creates and adds a translation using the enum as base identifier, appends a customizable suffix to all identifiers
      * @param constants the enum constants to use
      * @param suffix the suffix to add to the constants, e.g. *_message, *_name or *_label (this depends on the use)
      */
