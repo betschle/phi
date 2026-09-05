@@ -97,7 +97,7 @@ public class FlexTab
      * Shows a tab by its actor and properly selects its tab button as well
      * @param ofActor
      */
-    public void showTab(Actor ofActor) {
+    public void showTab (Actor ofActor) {
         int index = this.stackController.show(ofActor);
         if(index < 0) return;
         this.tabButtonGroup.updateCheckedState(this.tabButtons.get(index), true);
