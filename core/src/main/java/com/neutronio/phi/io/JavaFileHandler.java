@@ -33,6 +33,7 @@ public class JavaFileHandler implements FileHandler {
 
     @Override
     public List<GDXFileHandler.PhiFile> readFilesInDirectory(String path, FileLocation location, String glob) throws IOException, GdxRuntimeException {
+        logger.fine("Reading files in directory: " + path);
         File rootDirectory = new File(path); // location?
         DirectoryStream<Path> dirs = Files.newDirectoryStream(rootDirectory.toPath(), glob);
         List<GDXFileHandler.PhiFile> directories = new ArrayList<>();
@@ -47,7 +48,7 @@ public class JavaFileHandler implements FileHandler {
 
     @Override
     public StringBuilder readFileContents(String path, FileLocation location) throws IOException {
-
+        logger.log(Level.FINE, "Reading file contents: {0} {1}", new Object[]{path, location.name()});
         InputStream stream = null;
         StringBuilder builder = new StringBuilder();
         switch (location) {
@@ -78,6 +79,7 @@ public class JavaFileHandler implements FileHandler {
     @Override
     public FileOperationStatus saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
         // Note: cannot save to file locations INTERNAL, CLASSPATH
+        logger.log(Level.FINE, "Save file contents to: {0} {1}", new Object[]{path, location.name()});
         File file = new File(path);
         BufferedWriter writer = null;
         try {
@@ -95,7 +97,7 @@ public class JavaFileHandler implements FileHandler {
 
     // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
     public FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) {
-        Message message = new Message();
+        logger.log(Level.FINE, "Save file binary to: {0} {1}", new Object[]{path, location.name()});
         FileOutputStream fileOutputStream = null;
         FileOperationStatus fileOperationStatus = null;
         try {
@@ -116,6 +118,7 @@ public class JavaFileHandler implements FileHandler {
     // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
     @Override
     public <T extends Serializable> T readFileBinary(String path, FileLocation location) {
+        logger.log(Level.FINE, "Read file binary from: {0} {1}", new Object[]{path, location.name()});
         FileInputStream fileInputStream = null;
         try {
             fileInputStream = new FileInputStream(path);
@@ -131,10 +134,10 @@ public class JavaFileHandler implements FileHandler {
 
     @Override
     public PropertyResourceBundle loadBundle(String path, FileLocation location) {
+        logger.log(Level.FINE, "Loading resource bundle: {0} ", new Object[]{path});
         PropertyResourceBundle bundle = null;
         InputStream inputStream = null;
         try {
-            logger.log(Level.INFO, "Loading resource bundle: {0} ", new Object[]{path});
             inputStream = new FileInputStream(path);
             bundle = new PropertyResourceBundle(inputStream);
             inputStream.close();

@@ -86,6 +86,7 @@ public class GDXFileHandler implements FileHandler {
 
     @Override
     public List<PhiFile> readFilesInDirectory(String path, FileLocation location, String glob) throws IOException, GdxRuntimeException {
+        logger.fine("Reading files in directory: " + path);
         FileHandle fileHandle = toGdxFileHandle(path, location);
         DirectoryStream<Path> dirs = Files.newDirectoryStream(fileHandle.file().toPath(), glob);
         List<PhiFile> directories = new ArrayList<>();
@@ -100,6 +101,7 @@ public class GDXFileHandler implements FileHandler {
 
     @Override
     public StringBuilder readFileContents(String path, FileLocation location) throws IOException, GdxRuntimeException {
+        logger.log(Level.FINE, "Reading file contents: {0} {1}", new Object[]{path, location.name()});
         InputStream stream = getReader(path, location);
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -118,6 +120,7 @@ public class GDXFileHandler implements FileHandler {
 
     @Override
     public FileOperationStatus saveFileContents(String data, String path, FileLocation location, boolean overwrite) throws IOException {
+        logger.log(Level.FINE, "Save file contents to: {0} {1}", new Object[]{path, location.name()});
         FileHandle fileHandle = toGdxFileHandle(path, location);
         File file = fileHandle.file();
         FileOperationStatus fileOperationStatus = null;
@@ -138,6 +141,7 @@ public class GDXFileHandler implements FileHandler {
     // TODO valid file locations are: ABSOLUTE, LOCAL, EXTERNAL (, DATAPACK)
     @Override
     public FileOperationStatus saveFileBinary(Serializable savable, String path, FileLocation location) {
+        logger.log(Level.FINE, "Save file binary to: {0} {1}", new Object[]{path, location.name()});
         FileHandle fileHandle = toGdxFileHandle(path, location);
         FileOutputStream fileOutputStream = null;
         FileOperationStatus fileOperationStatus = null;
@@ -199,11 +203,11 @@ public class GDXFileHandler implements FileHandler {
 
     @Override
     public PropertyResourceBundle loadBundle(String path, FileLocation location) {
+        logger.log(Level.FINE, "Loading resource bundle: {0} ", new Object[]{path});
         PropertyResourceBundle bundle = null;
         FileHandle fileHandle = GDXFileHandler.toGdxFileHandle(path, location);
         InputStream inputStream = null;
         try {
-            logger.log(Level.INFO, "Loading resource bundle: {0} ", new Object[]{path});
             inputStream = fileHandle.read();
             bundle = new PropertyResourceBundle(inputStream);
             inputStream.close();
