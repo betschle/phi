@@ -7,18 +7,24 @@ import java.util.logging.Logger;
 
 /**
  * Stores localization resources inside a bundle. Compatible with LibGdx.
+ * There should be one of these instances per resource bundle, they are
+ * not intended to hold multiple different bundles.
  */
 public class I18n {
-    public static final Locale[] supportedLanguages = { Locale.ENGLISH, Locale.GERMAN };
     private Logger logger = Logger.getLogger(I18n.class.getCanonicalName());
 
     private Locale currentLocale;
 
+    private Locale[] supportedLanguages = { Locale.ENGLISH, Locale.GERMAN };
     private Map<Locale, PropertyResourceBundle> resourceBundles = new HashMap<>();
     private ResourceBundle baseBundle;
 
     public I18n(Locale locale) {
         this.currentLocale = locale;
+    }
+
+    public void setSupportedLanguages(Locale[] supportedLanguages) {
+        this.supportedLanguages = supportedLanguages;
     }
 
     /**
