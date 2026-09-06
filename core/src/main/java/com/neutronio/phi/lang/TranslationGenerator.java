@@ -1,5 +1,6 @@
 package com.neutronio.phi.lang;
 
+import com.neutronio.phi.io.FileHandler;
 import com.neutronio.phi.io.JavaFileHandler;
 import com.neutronio.phi.util.format.DateFormats;
 
@@ -16,9 +17,8 @@ import java.util.*;
  */
 public class TranslationGenerator { // TODO rename to CodeExporter?
 
-    // TODO this does not use the FileHandler. Mostly cause of property file loading
     // TODO csv import/export would be nice
-
+    // TODO this should use a configurable FileHandler everywhere
     public static class TranslationConfiguration {
         /** Used for enum translations that differ from the actual enum name, and offers
          * possibility to add name and description for each. */
@@ -144,6 +144,7 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         try {
             properties.load(new FileInputStream(sourcePropertyFile));
         } catch (IOException e) {
+
             e.printStackTrace();
         }
 
@@ -156,8 +157,9 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         try {
             File file = new File(destination);
             if(!file.exists()) file.createNewFile();
-            javaFileHandler.saveFileContents(generatedCode, file.getPath(), null, true );
+            javaFileHandler.saveFileContents(generatedCode, file.getPath(), FileHandler.FileLocation.LOCAL, true );
         } catch (IOException e) {
+            // TODO error here means that destination deosnt exist
             e.printStackTrace();
         }
     }
