@@ -2,6 +2,9 @@ package com.neutronio.phi.ui.skin;
 
 import com.neutronio.phi.lang.TranslationGenerator;
 
+/**
+ * Generates translation files for the phi-ui
+ */
 public class IdentifierGenerator {
 
     public static void main(String[] args) {
