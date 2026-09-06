@@ -1,8 +1,7 @@
 package com.neutronio.phi.io;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.neutronio.phi.app.Message;
+import com.neutronio.phi.lang.TranslationFileNotFoundException;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -132,6 +131,8 @@ public class JavaFileHandler implements FileHandler {
         return null;
     }
 
+    // TODO this must throw an IOException and that exception handled in I18n
+    // error repackaged/rephrased to "Translation File Not Found
     @Override
     public PropertyResourceBundle loadBundle(String path, FileLocation location) {
         logger.log(Level.FINE, "Loading resource bundle: {0} ", new Object[]{path});
@@ -142,7 +143,7 @@ public class JavaFileHandler implements FileHandler {
             bundle = new PropertyResourceBundle(inputStream);
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new TranslationFileNotFoundException(path, e);
         } finally {
             try {
                 if( inputStream != null) inputStream.close();

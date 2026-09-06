@@ -181,7 +181,7 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         try {
             File file = new File(destination);
             if(!file.exists()) file.createNewFile();
-            this.fileHandler.saveFileContents(generatedCode, file.getPath(), null, true );
+            this.fileHandler.saveFileContents(generatedCode, file.getPath(), FileHandler.FileLocation.LOCAL, true );
         } catch (IOException e) {
             e.printStackTrace();
         }

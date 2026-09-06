@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.neutronio.phi.PhiException;
+import com.neutronio.phi.lang.TranslationFileNotFoundException;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -212,7 +213,7 @@ public class GDXFileHandler implements FileHandler {
             bundle = new PropertyResourceBundle(inputStream);
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new TranslationFileNotFoundException(path, e);
         } finally {
             try {
                 if( inputStream != null) inputStream.close();

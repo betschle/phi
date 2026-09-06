@@ -19,6 +19,7 @@ import com.neutronio.phi.ui.skin.PhiSkin;
 import com.neutronio.phi.ui.skin.SkinConfiguration;
 import com.neutronio.phi.ui.tooltips.ToolTipManager;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class ComponentFactory
     /** Helper object to map enums to icons */
     private EnumIconMapper enumIconMapper = new EnumIconMapper();
     /** Additional GUI translations. Key is DataPack.Name  >*/
-    private Map<String, I18n> translations; // TODO add me for mod support
+    private Map<String, I18n> translations = new HashMap<>(); // TODO add me for mod support
 
     private float defaultTabWidth = 1200f;
     private float defaultTabHeight = 600;
@@ -135,12 +136,12 @@ public class ComponentFactory
     /**
      *
      * @param bundleName the name of the bundle, e.g. phi. Name is used to access the bundle file and the bundle itself later
-     * @param language the language of bundle
+     * @param currentLanguage the currently picked language
      * @param path the path to bundle
      * @param location the bundle location
      */
-    public void loadTranslations(String bundleName, Locale language, String path, FileHandler.FileLocation location) {
-        I18n translations = new I18n(language);
+    public void loadTranslations(String bundleName, Locale currentLanguage, String path, FileHandler.FileLocation location) {
+        I18n translations = new I18n(currentLanguage);
         translations.loadBundles(this.fileHandler, path, location, bundleName);
         this.translations.put(bundleName, translations);
     }
@@ -162,7 +163,8 @@ public class ComponentFactory
 
     // TODO duplicate with DataManager
     /**
-     * Gets the translation for a given key using the astrax-core translations
+     * Gets the translation for a given key using the core translations,
+     * using the current language
      * @param identifier a translation identifier
      * @return
      */
@@ -171,7 +173,8 @@ public class ComponentFactory
     }
 
     /**
-     * Gets the translation for a given key using the given translation bundle
+     * Gets the translation for a given key using the given translation bundle,
+     * using the current language
      * @param bundleName the bundle to use
      * @param identifier a translation identifier
      * @return
@@ -183,7 +186,8 @@ public class ComponentFactory
     }
 
     /**
-     * Translates, then formats String with provided parameters, using the astrax-core translations
+     * Translates, then formats String with provided parameters, using the core translations,
+     * using the current language
      * @param identifier a translation identifier
      * @param params parameters to format the translation identifier with
      * @return
@@ -193,7 +197,8 @@ public class ComponentFactory
     }
 
     /**
-     * Translates, then formats String with provided parameters, using the astrax-core translations
+     * Translates, then formats String with provided parameters, using the core translations,
+     * using the current language
      * @param identifier a translation identifier
      * @param params parameters to format the translation identifier with
      * @return
@@ -205,7 +210,8 @@ public class ComponentFactory
     }
 
     /**
-     * Translates an enum constant using the configured enum translation.
+     * Translates an enum constant using the configured enum translation,
+     * using the current language
      * @param enumConstant
      * @return
      */
@@ -216,8 +222,9 @@ public class ComponentFactory
 
     /**
      * Translates an enum constant using the configured enum translation and also
-     * injects placeholders into the string. The identifier content must possess the correct format
-     * placeholders (%s, %f) for this method to work.
+     * injects placeholders into the string, using the current language. The identifier content
+     * must possess the correct format placeholders (%s, %f) for this method to work.
+     *
      * @param enumConstant
      * @return
      */

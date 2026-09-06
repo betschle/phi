@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * Stores localization resources inside a bundle. Compatible with LibGdx.
+ * Stores and provides access to localization resource bundles. Compatible with LibGdx.
  * There should be one of these instances per resource bundle, they are
  * not intended to hold multiple different bundles.
  */
@@ -14,17 +14,11 @@ public class I18n {
     private Logger logger = Logger.getLogger(I18n.class.getCanonicalName());
 
     private Locale currentLocale;
-
-    private Locale[] supportedLanguages = { Locale.ENGLISH, Locale.GERMAN };
-    private Map<Locale, PropertyResourceBundle> resourceBundles = new HashMap<>();
-    private ResourceBundle baseBundle;
+    private PropertyResourceBundle currentBundle;
+    private PropertyResourceBundle baseBundle;
 
     public I18n(Locale locale) {
         this.currentLocale = locale;
-    }
-
-    public void setSupportedLanguages(Locale[] supportedLanguages) {
-        this.supportedLanguages = supportedLanguages;
     }
 
     /**
@@ -35,9 +29,11 @@ public class I18n {
      */
     public String translate(String key) throws MissingResourceException {
         String translated = null;
-        if(this.resourceBundles.get(currentLocale).containsKey(key)) {
-            translated = this.resourceBundles.get(currentLocale).getString(key);
+        // crashes if currentLocale = Base bundle locale
+        if(this.currentBundle.containsKey(key)) {
+            translated = this.currentBundle.getString(key);
         } else {
+            // fallback
             translated = this.baseBundle.getString(key);
         }
         return translated;
@@ -52,8 +48,8 @@ public class I18n {
     public String translateEnum(Enum element) throws MissingResourceException {
         String translated = null;
         String key = element.getClass().getSimpleName() + "_" + element.name().toLowerCase(Locale.ROOT);
-        if(this.resourceBundles.get(currentLocale).containsKey(key)) {
-            translated = this.resourceBundles.get(currentLocale).getString(key);
+        if(this.currentBundle.containsKey(key)) {
+            translated = this.currentBundle.getString(key);
         } else {
             translated = this.baseBundle.getString(key);
         }
@@ -79,10 +75,14 @@ public class I18n {
      */
     public void loadBundles(FileHandler fileHandler, String path, FileHandler.FileLocation location, String basename){
         this.baseBundle = fileHandler.loadBundle(path + "/" + basename + ".properties", location);
-        for(Locale locale : supportedLanguages) {
-            PropertyResourceBundle bundle = fileHandler.loadBundle(path + "/" + basename + "_" + locale.getLanguage()+".properties", location);
-            if(bundle != null) {
-                this.resourceBundles.put(locale, bundle);
+
+        if(this.currentLocale.equals(Locale.ROOT)) {
+            this.currentBundle = this.baseBundle;
+        } else {
+            try {
+                this.currentBundle = fileHandler.loadBundle(path + "/" + basename + "_" + currentLocale.getLanguage() + ".properties", location);
+            } catch (TranslationFileNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

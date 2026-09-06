@@ -17,6 +17,7 @@ public class PhiException extends RuntimeException {
     /*
         Instead of error codes I can just use classes... duh
      */
+    @Deprecated
     public enum ErrorCode {
 
         // ======== General, low-level Errors ========
@@ -92,6 +93,14 @@ public class PhiException extends RuntimeException {
     private ErrorCode errorCode = ErrorCode.E0000;
 
     public PhiException() {
+    }
+
+    public PhiException(String message) {
+        super(message);
+    }
+
+    public PhiException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**

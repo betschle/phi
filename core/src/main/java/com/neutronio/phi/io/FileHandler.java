@@ -2,6 +2,7 @@ package com.neutronio.phi.io;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.neutronio.phi.app.Message;
+import com.neutronio.phi.lang.TranslationFileNotFoundException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -120,7 +121,8 @@ public interface FileHandler {
      * Loads a property resource bundle
      * @param path
      * @param location
+     * @throws TranslationFileNotFoundException
      * @return
      */
-    PropertyResourceBundle loadBundle(String path, FileLocation location);
+    PropertyResourceBundle loadBundle(String path, FileLocation location) throws TranslationFileNotFoundException;
 }
