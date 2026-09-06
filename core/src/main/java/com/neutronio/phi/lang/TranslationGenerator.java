@@ -29,6 +29,12 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         public List<Properties> properties = new ArrayList<>();
     }
 
+    private FileHandler fileHandler = new JavaFileHandler();
+
+    public void setFileHandler(FileHandler fileHandler) {
+        this.fileHandler = fileHandler;
+    }
+
     /**
      * Turns a properties object into a list of property keys.
      * @param properties
@@ -149,15 +155,12 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
         }
 
         List<String> convert = this.convertToIdentifiers(properties);
-
         String generatedCode = this.generateCode(packageName, className, convert);
-
-        JavaFileHandler javaFileHandler = new JavaFileHandler();
         String destination = destPath + "/"+ packageName.replace('.', '/') + "/" + className + ".java";
         try {
             File file = new File(destination);
             if(!file.exists()) file.createNewFile();
-            javaFileHandler.saveFileContents(generatedCode, file.getPath(), FileHandler.FileLocation.LOCAL, true );
+            this.fileHandler.saveFileContents(generatedCode, file.getPath(), FileHandler.FileLocation.LOCAL, true );
         } catch (IOException e) {
             // TODO error here means that destination deosnt exist
             e.printStackTrace();
@@ -174,12 +177,11 @@ public class TranslationGenerator { // TODO rename to CodeExporter?
     public void generateAndSaveCode(TranslationConfiguration configuration, String className, String packageName, String destPath) {
         String generatedCode = this.generateCode(packageName, className, configuration);
 
-        JavaFileHandler javaFileHandler = new JavaFileHandler();
         String destination = destPath + "/"+ packageName.replace('.', '/') + "/" + className + ".java";
         try {
             File file = new File(destination);
             if(!file.exists()) file.createNewFile();
-            javaFileHandler.saveFileContents(generatedCode, file.getPath(), null, true );
+            this.fileHandler.saveFileContents(generatedCode, file.getPath(), null, true );
         } catch (IOException e) {
             e.printStackTrace();
         }
