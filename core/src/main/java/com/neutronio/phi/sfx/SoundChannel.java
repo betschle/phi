@@ -15,7 +15,7 @@ public abstract class SoundChannel<S extends SoundInstance> {
 
     protected Logger logger;
     /** Available sounds to play in this channel */
-    protected SoundContainer soundContainer;
+    protected SoundContainer soundContainer = new SoundContainer();
     /** Sound instances currently being played */
     protected List<S> soundInstances = new ArrayList<>();
     /** The maximum volume allowed in this channel */
