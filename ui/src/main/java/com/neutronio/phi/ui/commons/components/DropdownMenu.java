@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.neutronio.phi.ui.ComponentFactory;
+import com.neutronio.phi.ui.Tweening;
 import com.neutronio.phi.ui.commons.SelectBoxWrapper;
 import com.neutronio.phi.ui.commons.buttons.AstraXTextButton;
 import com.neutronio.phi.ui.commons.buttons.SoloButtonSelection;
@@ -71,7 +72,7 @@ public class DropdownMenu
                     hovering = false;
                     if( !button.isChecked() ) {
                         logger.finest("Fade out from dropdown");
-                        dropDown.addAction( Tweening.getDropDownFadeOut(0.1f) );
+                        dropDown.addAction(Tweening.getDropDownFadeOut(0.1f) );
                         event.handle();
                     }
                 }
@@ -86,7 +87,7 @@ public class DropdownMenu
                         logger.finest("Fade In from button");
                         dropDown.toFront();
                         dropDown.setPosition( button.getX(), 0, Align.topLeft);
-                        dropDown.addAction( Tweening.getDropDownFadeIn(0.1f) );
+                        dropDown.addAction(Tweening.getDropDownFadeIn(0.1f) );
                         // TODO drop down should be behind buttons duriong animation, but in front
                         // of everything else after animation
                         timeout = maxTimeout;
@@ -154,11 +155,11 @@ public class DropdownMenu
     }
 
     public void addDropDown(String buttonText, SelectBoxWrapper<Runnable>[]  dropDownChoices) {
-        AstraXTextButton button = this.componentFactory.getTextButton("dropDown", buttonText, "dropDown");
+        AstraXTextButton button = new AstraXTextButton(this.componentFactory, buttonText, "dropDown");
         button.setCanCheck(true);
         button.setName("DropDown.TextButton."+buttonText);
 
-        List<SelectBoxWrapper<Runnable>> selectBoxWrappers = AstraXUtil.toList(dropDownChoices);
+        List<SelectBoxWrapper<Runnable>> selectBoxWrappers = List.of(dropDownChoices);
         ButtonList<AstraXTextButton, SelectBoxWrapper<Runnable>> buttonList = new ButtonList(componentFactory, "transparent");
         buttonList.setName("DropDown.Menu."+buttonText);
         buttonList.setButtonCount(dropDownChoices.length);

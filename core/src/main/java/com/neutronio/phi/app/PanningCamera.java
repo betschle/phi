@@ -182,7 +182,7 @@ public class PanningCamera implements Zoomable {
         if(this.focusedActor == null) return;
         this.currentFocusPos.set(this.focusedActor.getWidth()/2f, this.focusedActor.getHeight()/2f);
         // TODO eventually this should operate on target level
-        AstraXUtil.getWorldPosition(this.currentFocusPos, this.focusedActor);
+//        AstraXUtil.getWorldPosition(this.currentFocusPos, this.focusedActor);
 
         this.currentFocusPosInterpolated.set(
                 this.currentFocusPosInterpolated.x * 0.8f + this.currentFocusPos.x * 0.2f,
