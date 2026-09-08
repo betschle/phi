@@ -1,6 +1,7 @@
 package com.neutronio.phi.ui.commons;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.neutronio.phi.app.Zoomable;
 
 /**
  * A general purpose, configurable, non-libgdx zooming mechanism

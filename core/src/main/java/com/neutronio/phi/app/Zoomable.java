@@ -1,4 +1,4 @@
-package com.neutronio.phi.ui.commons;
+package com.neutronio.phi.app;
 
 /**
  * A UI Component with zooming functionality.
