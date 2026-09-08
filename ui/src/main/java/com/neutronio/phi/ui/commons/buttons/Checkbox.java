@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.neutronio.phi.sfx.ButtonSounds;
 import com.neutronio.phi.ui.ComponentFactory;
 import com.neutronio.phi.ui.Tweening;
 
@@ -35,6 +36,7 @@ public class Checkbox extends BaseButton {
         this.knobImage.setTouchable(Touchable.disabled);
         this.addActor(this.knobImage);
 
+        this.setButtonSounds(componentFactory.getSkin().get("checkbox", ButtonSounds.class));
         AstraXButton.AstraXButtonStyle iconStyle = this.factory.getSkin().get(buttonStyle, AstraXButton.AstraXButtonStyle.class).copy();
         this.setStyle(iconStyle);
         this.clickListener = new ClickListener() {

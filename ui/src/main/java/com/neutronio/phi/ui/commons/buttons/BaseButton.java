@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Pools;
+import com.neutronio.phi.sfx.ButtonSounds;
 import com.neutronio.phi.ui.CustomAction;
 
 /**
@@ -14,12 +15,17 @@ public abstract class BaseButton extends WidgetGroup implements Button {
     // TODO add these fields to spare some duplicate code to TradeItemButton & TargetItem
     protected ClickListener clickListener;
     protected ButtonSelection buttonGroup;
+    protected ButtonSounds buttonSounds = new ButtonSounds();
     protected boolean isChecked;
     protected boolean isDisabled;
     protected boolean canCheck = true;
     protected boolean programmaticChangeEvents;
     /** A custom button action. Will be executed after the button finished tweening. */
     protected CustomAction buttonAction;
+
+    public void setButtonSounds(ButtonSounds buttonSounds) {
+        this.buttonSounds = buttonSounds;
+    }
 
     @Override
     public void setButtonGroup(ButtonSelection buttonGroup) {

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.neutronio.phi.sfx.ButtonSounds;
 import com.neutronio.phi.ui.ComponentFactory;
 import com.neutronio.phi.ui.Tweening;
 import com.neutronio.phi.ui.tooltips.ToolTipListener;
@@ -46,8 +47,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
     protected AstraXTextButtonStyle style;
     /** A base background image */
     private Image baseImage;
-    /** The inline icon(image */
-    private Image iconImage;
 
     /** True if the button does a squish on mouse exit or enter */
     private boolean squishable = true;
@@ -90,13 +89,25 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
             return copy;
         }
     }
-    @Deprecated
+
     public AstraXTextButton(ComponentFactory componentFactory, String buttonStyle) {
-        this(componentFactory, "", null, buttonStyle);
+        this(componentFactory, null, buttonStyle);
     }
 
     public AstraXTextButton(ComponentFactory componentFactory, String icon, String buttonStyle) {
         this(componentFactory, "", icon, buttonStyle);
+    }
+
+    /**
+     * Creates a text button using custom style and button sounds
+     * @param componentFactory
+     * @param text the text to display
+     * @param buttonStyle
+     * @param buttonSounds
+     */
+    public AstraXTextButton(ComponentFactory componentFactory, String text, String buttonStyle, String buttonSounds) {
+        this(componentFactory, text, null, componentFactory.getSkin().get(buttonStyle, AstraXTextButtonStyle.class).copy());
+        this.setButtonSounds(componentFactory.getSkin().get(buttonSounds, ButtonSounds.class));
     }
 
     public AstraXTextButton(ComponentFactory componentFactory, String text, String iconDrawable, AstraXTextButtonStyle buttonStyle) {
@@ -105,10 +116,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
         this.baseImage = new Image();
         this.baseImage.setFillParent(true); // activate this to enable fill in table layouts
         this.addActor(this.baseImage);
-
-        this.iconImage = new Image();
-        this.iconImage.setTouchable(Touchable.disabled);
-        this.addActor(this.iconImage);
 
         this.label = new Label("", componentFactory.getSkin());
         this.label.setTouchable(Touchable.disabled);
@@ -119,11 +126,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
         this.container.align(Align.center);
         this.addActor(this.container);
         this.setStyle(buttonStyle);
-        if( iconDrawable != null) {
-            this.setInlineIcon(factory.getSkin().getDrawable(iconDrawable));
-        } else {
-            this.setInlineIcon(null);
-        }
         this.setText(text);
 
         this.clickListener = new ClickListener() {
@@ -132,8 +134,8 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(isDisabled) return false; // TODO error sound when disabled?
                 event.setBubbles(false); // do not forward to parent if button was clicked
-                if(style.buttonSounds.soundPressed != null) {
-                    factory.playUISound(style.buttonSounds.soundPressed);
+                if(buttonSounds.soundPressed != null) {
+                    factory.playUISound(buttonSounds.soundPressed);
                 }
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -142,8 +144,8 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(isDisabled ) return; // TODO error sound when disabled?
                 // only play this when the hovering actor is self
-                if(style.buttonSounds.soundRelease != null ) {
-                    factory.playUISound(style.buttonSounds.soundRelease);
+                if(buttonSounds.soundRelease != null ) {
+                    factory.playUISound(buttonSounds.soundRelease);
                 }
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -154,13 +156,12 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
                 if(isDisabled) return;
                 if(style.baseDrawable.overRegion != null)
                     updateDrawable();
-                if(style.buttonSounds.soundOver != null && pointer < 0 &&
+                if(buttonSounds.soundOver != null && pointer < 0 &&
                         fromActor != null && !fromActor.isDescendantOf(event.getListenerActor())) {
-                    factory.playUISound(style.buttonSounds.soundOver);
+                    factory.playUISound(buttonSounds.soundOver);
                 }
                 if(isSquishable()) {
                     baseImage.addAction(Tweening.getSquish(1.5f, null));
-                    iconImage.addAction(Tweening.getSquish(0.5f, null));
                     label.addAction(Tweening.getSquish(0.5f, null));
                 }
                 if(toolTipListener != null && toolTipInfo != null) toolTipListener.onEnterTooltip(toolTipInfo, x, y, baseImage.getParent());
@@ -172,7 +173,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
                 if(isSquishable()) {
                     // scale back on mouse exit
                     baseImage.addAction(Actions.scaleTo(1, 1, 0.4f, Interpolation.bounce));
-                    iconImage.addAction(Actions.scaleTo(1, 1, 0.4f, Interpolation.bounce));
                     label.addAction(Actions.scaleTo(1, 1, 0.4f, Interpolation.bounce));
                 }
                 if(toolTipListener != null && toolTipInfo != null) toolTipListener.onExitTooltip(toolTipInfo, x, y, baseImage.getParent());
@@ -185,14 +185,12 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
                 if(!isChecked)  {
                     if(squishOnClick) {
                         baseImage.addAction(Tweening.getSquish(2.5f, getButtonAction()));
-                        iconImage.addAction(Tweening.getSquish(1f, null));
                         label.addAction(Tweening.getSquish(1f, null));
                     }
                 }
                 else {
                     if(squishOnClick) {
                         baseImage.addAction(Tweening.getSquish(0.8f, getButtonAction()));
-                        iconImage.addAction(Tweening.getSquish(0.2f));
                         label.addAction(Tweening.getSquish(0.2f));
                     }
                 }
@@ -209,10 +207,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
         this.addListener( this.clickListener );
     }
 
-    public AstraXTextButton(ComponentFactory componentFactory, String text, String iconDrawable, String buttonStyle) {
-        this(componentFactory, text, iconDrawable, componentFactory.getSkin().get(buttonStyle, AstraXTextButtonStyle.class).copy());
-    }
-
     public void setStyle(AstraXTextButtonStyle style) {
         this.style = style;
         this.label.setStyle( this.factory.getSkin().get( style.labelStyle, Label.LabelStyle.class));
@@ -222,9 +216,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
 
         this.baseImage.setDrawable(this.style.baseDrawable.getDrawable(this));
         this.baseImage.setColor(this.style.baseColor.getColor(this));
-        if(style.iconDrawable != null) {
-            this.setInlineIcon(style.iconDrawable);
-        }
         this.pack();
     }
 
@@ -293,11 +284,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
     public String getText() {
         return this.label.getText().toString();
     }
-
-    public Image getInlineIcon() {
-        return iconImage;
-    }
-
     @Override
     public float getMaxWidth() {
         return this.container.getMaxWidth();
@@ -328,37 +314,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
         return this.container.getPrefHeight();
     }
 
-    /**
-     * Changes the inline icon
-     * @param iconImage
-     */
-    public void setInlineIcon(Drawable iconImage) {
-        if( iconImage != null ) {
-            this.style.iconDrawable = iconImage;
-            this.iconImage.setVisible(true);
-            this.iconImage.setDrawable(this.style.iconDrawable);
-            this.iconImage.setSize(this.style.width - this.style.padding, this.style.height - this.style.padding );
-
-            if( this.style.iconColor != null) {
-                this.iconImage.setColor(this.style.iconColor.getColor(this));
-            } else {
-                this.iconImage.setColor(Color.WHITE);
-            }
-
-            this.iconImage.setAlign(Align.center);
-            this.iconImage.setOrigin(Align.center);
-            this.iconImage.setPosition(
-                    this.style.width/2f - (this.style.width - this.style.padding)/2f,
-                    this.style.height/2f - (this.style.height - this.style.padding)/2f );
-        } else {
-            this.iconImage.setVisible(false);
-        }
-    }
-
-
-    public void addActionToIcon(Action action) {
-        this.iconImage.addAction(action);
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -366,9 +321,6 @@ public class AstraXTextButton extends BaseButton { // TODO rename to TextButton
         this.baseImage.setColor(this.style.baseColor.getColor(this));
         if( this.style.iconColor != null) {
             this.label.setColor(this.style.iconColor.getColor(this));
-        }
-        if( this.style.iconDrawable != null && this.style.iconColor != null) {
-            this.iconImage.setColor(this.style.iconColor.getColor(this));
         }
     }
 

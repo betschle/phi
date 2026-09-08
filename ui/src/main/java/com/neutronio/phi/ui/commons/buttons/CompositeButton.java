@@ -30,6 +30,7 @@ public class CompositeButton
     // TODO BUG background is not always centered in table layout!
     protected ClickListener clickListener;
     protected ButtonSelection buttonGroup;
+    protected ButtonSounds buttonSounds = new ButtonSounds();
     protected boolean isChecked;
     protected boolean isDisabled;
     protected boolean canCheck = true;
@@ -49,6 +50,10 @@ public class CompositeButton
 
     public CompositeButton(ComponentFactory factory, CompositeButtonStyle style, String backgroundStyle) {
         super(factory, style, backgroundStyle);
+    }
+    public CompositeButton(ComponentFactory factory, String buttonStyle, String buttonSounds, String backgroundStyle) {
+        this(factory, buttonStyle, backgroundStyle);
+        this.setButtonSounds(componentFactory.getSkin().get(buttonSounds, ButtonSounds.class));
     }
 
     public CompositeButton(ComponentFactory factory, String buttonStyle, String backgroundStyle) {
@@ -165,6 +170,10 @@ public class CompositeButton
                 Pools.free(changeEvent);
             }
         }
+    }
+
+    public void setButtonSounds(ButtonSounds buttonSounds) {
+        this.buttonSounds = buttonSounds;
     }
 
     public void setButtonAction(CustomAction buttonAction) {

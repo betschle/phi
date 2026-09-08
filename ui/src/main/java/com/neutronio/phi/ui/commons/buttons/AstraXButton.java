@@ -32,7 +32,8 @@ public class AstraXButton extends BaseButton { // TODO rename to SimpleButton or
         public int height = 32; // TODO BUG: for AstraXTextButton, this is both the size of the inner icon and also the component size
         public int padding = 10; // TODO rename to iconPadding
 
-        public ButtonSounds buttonSounds = new ButtonSounds();
+        @Deprecated
+        public ButtonSounds buttonSounds = new ButtonSounds(); // TODO remove
 
         public ReactiveColor baseColor;
         public ReactiveDrawable baseDrawable;
@@ -82,6 +83,18 @@ public class AstraXButton extends BaseButton { // TODO rename to SimpleButton or
         this(componentFactory, iconDrawable, componentFactory.getSkin().get(buttonStyle, AstraXButtonStyle.class).copy());
     }
 
+    /**
+     * Creates a button using custom icon, style and button sounds
+     * @param componentFactory
+     * @param iconDrawable
+     * @param buttonStyle must be inside of skin
+     * @param buttonSounds must be inside of skin
+     */
+    public AstraXButton(ComponentFactory componentFactory, String iconDrawable, String buttonStyle, String buttonSounds) {
+        this(componentFactory, iconDrawable, componentFactory.getSkin().get(buttonStyle, AstraXButtonStyle.class).copy());
+        this.setButtonSounds(componentFactory.getSkin().get(buttonSounds, ButtonSounds.class));
+    }
+
     public AstraXButton(ComponentFactory componentFactory, String iconDrawable, AstraXButtonStyle buttonStyle) {
         super();
         this.factory = componentFactory;
@@ -112,7 +125,7 @@ public class AstraXButton extends BaseButton { // TODO rename to SimpleButton or
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (isDisabled()) return;
-                if( style.buttonSounds.soundRelease != null) {
+                if(buttonSounds.soundRelease != null) {
                     factory.playUISound(style.buttonSounds.soundRelease);
                 }
                 super.touchUp(event, x, y, pointer, button);
@@ -121,11 +134,11 @@ public class AstraXButton extends BaseButton { // TODO rename to SimpleButton or
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
-                if( style.baseDrawable.overRegion != null)
+                if(style.baseDrawable.overRegion != null)
                     updateDrawable();
-                if( style.buttonSounds.soundOver != null && pointer < 0
+                if(buttonSounds.soundOver != null && pointer < 0
                     && fromActor != null && !fromActor.isDescendantOf(event.getListenerActor())) {
-                    factory.playUISound(style.buttonSounds.soundOver);
+                    factory.playUISound(buttonSounds.soundOver);
                 }
                 if(toolTipListener != null && toolTipInfo != null) toolTipListener.onEnterTooltip(toolTipInfo, x, y, fromActor);
             }
@@ -160,7 +173,6 @@ public class AstraXButton extends BaseButton { // TODO rename to SimpleButton or
         };
         this.addListener(this.clickListener);
     }
-
 
     /**
      * Makes the button do a squishie
