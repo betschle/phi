@@ -6,7 +6,7 @@ import com.neutronio.phi.ui.commons.buttons.AstraXButton;
 import com.neutronio.phi.ui.commons.components.Palette;
 
 /**
- * Works like a {@link com.neutronio.astrax.ui.editor.Palette}, except with colors.
+ * Works like a {@link com.neutronio.phi.ui.commons.components.Palette}, except with colors.
  */
 public class ColorPalette extends Palette<AstraXButton, Color> {
 
